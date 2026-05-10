@@ -1100,14 +1100,15 @@ export default function App() {
         .radio-dot { width: 5px; height: 5px; border-radius: 50%; background: #fff; }
         .tier-card {
           background: var(--s1); border: 1px solid var(--border);
-          display: flex; flexDirection: column;
-          transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-          height: 100%;
+          display: flex; flex-direction: column;
+          transition: all 0.2s;
+          padding: 16px;
+          min-height: 200px;
         }
-        .tier-card:hover { border-color: var(--aborder); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
-        .tier-card.selected { border-color: var(--accent); background: rgba(251,12,12,0.03); }
+        .tier-card:hover { border-color: var(--accent); background: rgba(251,12,12,0.02); }
+        .tier-card.selected { border-color: var(--accent); background: rgba(251,12,12,0.05); }
         .tiers-grid {
-          display: grid; gridTemplateColumns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;
+          display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
         }
         .tier-hd { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer; gap: 12px; }
         .bar-track { height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; }
@@ -1417,41 +1418,44 @@ export default function App() {
                     {/* ── ARCHITECTURE GUIDE ── */}
                     {tab === "guide" && (
                         <div className="fade">
-                            <div className="sl" style={{ marginBottom: 24 }}>System Architecture Catalog</div>
+                            <div className="sl" style={{ marginBottom: 20 }}>System Architecture Catalog</div>
                             <div className="tiers-grid">
                                 {TIERS.map(t => {
                                     const isTarget = result?.tier?.id === t.id;
                                     return (
-                                        <div key={t.id} className={`tier-card ${isTarget ? "selected" : ""}`} style={{ padding: 24 }}>
-                                            <div className="mono" style={{ fontSize: 9, color: "var(--accent)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 12 }}>{t.label}</div>
-                                            <h3 className="serif" style={{ fontSize: 18, fontWeight: 700, marginBottom: 4, lineHeight: 1.2 }}>{t.name}</h3>
-                                            <div style={{ fontSize: 11, color: "var(--dim)", marginBottom: 20 }}>{t.subtitle}</div>
+                                        <div key={t.id} className={`tier-card ${isTarget ? "selected" : ""}`}>
+                                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+                                                <div>
+                                                    <div className="mono" style={{ fontSize: 8, color: "var(--accent)", letterSpacing: "0.1em" }}>{t.label}</div>
+                                                    <h3 className="serif" style={{ fontSize: 16, fontWeight: 700, marginTop: 2 }}>{t.name}</h3>
+                                                </div>
+                                                {isTarget && <span style={{ fontSize: 12 }}>🎯</span>}
+                                            </div>
                                             
                                             <div style={{ flex: 1 }}>
-                                                <p style={{ fontSize: 13, color: "var(--sub)", lineHeight: 1.6, marginBottom: 24 }}>
-                                                    {t.description.split('.')[0]}.
+                                                <p style={{ fontSize: 11, color: "var(--sub)", lineHeight: 1.5, marginBottom: 16 }}>
+                                                    {t.subtitle}
                                                 </p>
                                                 
-                                                <div style={{ display: "grid", gap: 14, marginBottom: 24 }}>
+                                                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 12px" }}>
                                                     {[
                                                         { l: "Timeline", v: t.timeline },
-                                                        { l: "Complexity", v: t.complexity },
-                                                        { l: "Dev Cost", v: `${fmt(t.devUSD[0], currency)}+` },
+                                                        { l: "Dev", v: `${fmt(t.devUSD[0], currency)}+` },
                                                     ].map(item => (
                                                         <div key={item.l}>
-                                                            <div className="mono" style={{ fontSize: 8, color: "var(--dim)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }}>{item.l}</div>
-                                                            <div style={{ fontSize: 12, color: "var(--text)", fontWeight: 500 }}>{item.v}</div>
+                                                            <div className="mono" style={{ fontSize: 7, color: "var(--dim)", textTransform: "uppercase" }}>{item.l}</div>
+                                                            <div style={{ fontSize: 11, color: "var(--text)", fontWeight: 500 }}>{item.v}</div>
                                                         </div>
                                                     ))}
                                                 </div>
                                             </div>
 
-                                            <div style={{ borderTop: "1px solid var(--border)", paddingTop: 16 }}>
-                                                <div className="mono" style={{ fontSize: 8, color: "var(--accent)", textTransform: "uppercase", marginBottom: 6 }}>Tech Stack</div>
-                                                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                                                    {t.stack.map(s => (
-                                                        <span key={s} style={{ fontSize: 9, color: "var(--dim)", background: "var(--s2)", padding: "2px 6px", border: "1px solid var(--border)" }}>{s}</span>
+                                            <div style={{ marginTop: 14, paddingTop: 10, borderTop: "1px solid var(--border)" }}>
+                                                <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                                                    {t.stack.slice(0, 3).map(s => (
+                                                        <span key={s} style={{ fontSize: 8, color: "var(--dim)", background: "var(--s2)", padding: "1px 4px", border: "1px solid var(--border)" }}>{s}</span>
                                                     ))}
+                                                    {t.stack.length > 3 && <span style={{ fontSize: 8, color: "var(--dim)" }}>+</span>}
                                                 </div>
                                             </div>
                                         </div>
