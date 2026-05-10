@@ -99,7 +99,7 @@ const TIERS = [
         modelNote: "Claude 3.5 Sonnet at $3.00/M input · $15.00/M output. Pinecone vector DB approx. $70/mo base plan.",
         stack: ["Claude 3.5 Sonnet", "LangChain / LlamaIndex", "Pinecone or Weaviate", "Next.js + Tailwind CSS"],
         description:
-            "The Knowledge-Grounded architecture integrates a sophisticated retrieval layer between the user and the AI. Upon receiving a query, the system queries a high-performance vector database of your indexed corporate documents to extract the most contextually relevant passages. These are provided as real-time context to the model, ensuring every response is grounded in your verified data rather than general training knowledge. This approach virtually eliminates hallucinations on business-specific topics and allows for instantaneous knowledge base updates without the need for costly model retraining.",
+            "A <span class='tt' data-def='Retrieval-Augmented Generation. This grounds the model in your actual documents.'>RAG</span> bot adds a retrieval layer between the user and the language model. When a query arrives, the system searches a <span class='tt' data-def='A database that stores text as mathematical vectors for similarity search.'>vector database</span> of your indexed documents, extracts the most relevant passages, and passes them as context to the model. The model then generates a response grounded in your actual content — not its training data. This eliminates hallucination on covered topics and allows the knowledge base to be updated without retraining the model.",
         useCases: [
             "Legal or compliance Q&A over internal policy documents",
             "Real estate listing search and recommendations",
@@ -1177,12 +1177,12 @@ export default function App() {
         }
         .tabs-container::-webkit-scrollbar { display: none; }
         .tab-btn { flex-shrink: 0; }
-        .mobile-only { display: none; }
-        .desktop-only { display: inline; }
+        .mobile-only { display: none !important; }
+        .desktop-only { } /* preserved for desktop visibility */
         
         @media (max-width: 640px) {
-          .mobile-only { display: inline; }
-          .desktop-only { display: none; }
+          .mobile-only { display: block !important; }
+          .desktop-only { display: none !important; }
           .tiers-grid { grid-template-columns: 1fr !important; }
           .glossary-item { grid-template-columns: 1fr !important; gap: 8px !important; }
           .header-content { flex-direction: column !important; align-items: center !important; text-align: center !important; }
@@ -1505,13 +1505,9 @@ export default function App() {
                                                 <span style={{ fontSize: 12, transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>▼</span>
                                             </div>
 
-                                            {/* Card (Desktop: Always, Mobile: only if expanded) */}
                                             <div 
                                                 className={`tier-card ${isTarget ? "selected" : ""} ${!isExpanded ? "desktop-only" : "fade"}`} 
-                                                onClick={() => {
-                                                    if (isExpanded && window.innerWidth <= 640) return; // don't open modal if already expanded in accordion
-                                                    setTierDetail(t);
-                                                }}
+                                                onClick={() => setTierDetail(t)}
                                                 style={isExpanded && window.innerWidth <= 640 ? { borderTop: "none" } : {}}
                                             >
                                                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
@@ -1791,8 +1787,8 @@ export default function App() {
                         <p style={{ fontSize: 13, color: "var(--sub)", lineHeight: 1.6, marginBottom: 32 }}>{tierDetail.subtitle}</p>
 
                         <div style={{ marginBottom: 32 }}>
-                            <div className="sl">Overview</div>
-                            <div style={{ fontSize: 14, color: "var(--text)", lineHeight: 1.7 }}>{tierDetail.description}</div>
+                            <div className="sl">Technical Overview</div>
+                            <div style={{ fontSize: 14, color: "var(--text)", lineHeight: 1.7 }} dangerouslySetInnerHTML={{ __html: tierDetail.description }} />
                         </div>
 
                         <div className="modal-2col" style={{ marginBottom: 32 }}>
