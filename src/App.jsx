@@ -943,6 +943,9 @@ export default function App() {
     const [msgs, setMsgs] = useState(15000);
     const [currency, setCurrency] = useState("PKR");
     const [menuOpen, setMenuOpen] = useState(false);
+    const [auth, setAuth] = useState(false);
+    const [pass, setPass] = useState("");
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         (async function () {
@@ -950,6 +953,18 @@ export default function App() {
             cal("ui", { "hideEventTypeDetails": false, "layout": "month_view" });
         })();
     }, []);
+
+    function handleAuth(e) {
+        e?.preventDefault();
+        if (pass === "Insurgo2026") {
+            setAuth(true);
+            // Trigger notification
+            fetch("/.netlify/functions/notify", { method: "POST" }).catch(() => {});
+        } else {
+            setError(true);
+            setTimeout(() => setError(false), 2000);
+        }
+    }
 
     function choose(qid, scores) {
         const next = { ...answers, [qid]: scores };
@@ -1104,8 +1119,40 @@ export default function App() {
       `}} />
 
             <div className="sans" style={{ background: "var(--bg)", color: "var(--text)", minHeight: "100vh" }}>
-
-                {/* HEADER */}
+                {!auth ? (
+                    <div className="fade" style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 26 }}>
+                        <div style={{ maxWidth: 320, width: "100%", textAlign: "center" }}>
+                            <img src="/logo.svg" alt="Insurgo" style={{ height: 42, margin: "0 auto 32px", display: "block" }} />
+                            <div className="mono" style={{ fontSize: 9, color: "var(--dim)", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 24 }}>
+                                Project Access Restricted
+                            </div>
+                            <form onSubmit={handleAuth}>
+                                <input
+                                    type="password"
+                                    value={pass}
+                                    onChange={(e) => setPass(e.target.value)}
+                                    placeholder="Enter Access Key"
+                                    autoFocus
+                                    style={{
+                                        width: "100%", background: "var(--s1)", border: `1px solid ${error ? "var(--accent)" : "var(--border)"}`,
+                                        color: "var(--text)", padding: "14px", fontSize: 13, textAlign: "center", outline: "none",
+                                        fontFamily: "var(--mono)", marginBottom: 16, transition: "border-color 0.2s"
+                                    }}
+                                />
+                                <button className="cta" style={{
+                                    width: "100%", padding: "12px", background: "var(--accent)", border: "none",
+                                    color: "#fff", fontSize: 11, fontWeight: 600, textTransform: "uppercase",
+                                    letterSpacing: "0.1em", fontFamily: "var(--mono)"
+                                }}>
+                                    Unlock Proposal
+                                </button>
+                            </form>
+                            {error && <div style={{ marginTop: 16, fontSize: 11, color: "var(--accent)", fontFamily: "var(--mono)" }}>Invalid Access Key</div>}
+                        </div>
+                    </div>
+                ) : (
+                    <>
+                        {/* HEADER */}
                 <div style={{ borderBottom: "1px solid var(--border)" }}>
                     <div style={{ maxWidth: 960, margin: "0 auto", padding: "26px 26px 0" }}>
                         <div className="header-content" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 32, paddingBottom: 22 }}>
@@ -1590,7 +1637,8 @@ export default function App() {
                             API estimates at 500 input / 300 output tokens per exchange. Monthly API costs exclude infrastructure hosting and third-party integration fees.
                         </div>
                     </div>
-                </div>
+                </>
+                )}
             </div>
 
             {/* FLOATING CTA */}
