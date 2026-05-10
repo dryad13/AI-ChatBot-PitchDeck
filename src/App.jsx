@@ -17,7 +17,7 @@ const TIERS = [
         modelNote: "Flat-rate platform fee (Botpress / Voiceflow) or open-source self-hosted.",
         stack: ["Botpress / Voiceflow", "WhatsApp Cloud API", "Node.js Webhook", "No vector database"],
         description:
-            "A rule-based bot follows a fixed script. It matches user input against predefined keywords or button selections and returns a predetermined response. There is no language model, no inference, and no reasoning. It is entirely deterministic — the same input always produces the same output.",
+            "A rule-based bot follows a fixed script. It matches user input against predefined keywords or button selections and returns a predetermined response. There is no language model, no <span class='tt' data-def='The act of running a model to produce an output. Every response requires inference.'>inference</span>, and no reasoning. It is entirely deterministic — the same input always produces the same output.",
         useCases: [
             "Product FAQ and business hours",
             "Order status lookup via webhook",
@@ -99,7 +99,7 @@ const TIERS = [
         modelNote: "Claude Sonnet 4.6 at $3.00/M input · $15.00/M output. Pinecone vector DB approx. $70/mo base plan.",
         stack: ["Claude Sonnet 4.6", "LangChain / LlamaIndex", "Pinecone or Weaviate", "Next.js + Tailwind CSS"],
         description:
-            "A RAG bot adds a retrieval layer between the user and the language model. When a query arrives, the system searches a vector database of your indexed documents, extracts the most relevant passages, and passes them as context to the model. The model then generates a response grounded in your actual content — not its training data. This eliminates hallucination on covered topics and allows the knowledge base to be updated without retraining the model.",
+            "A <span class='tt' data-def='Retrieval-Augmented Generation. This grounds the model in your actual documents.'>RAG</span> bot adds a retrieval layer between the user and the language model. When a query arrives, the system searches a <span class='tt' data-def='A database that stores text as mathematical vectors for similarity search.'>vector database</span> of your indexed documents, extracts the most relevant passages, and passes them as context to the model. The model then generates a response grounded in your actual content — not its training data. This eliminates hallucination on covered topics and allows the knowledge base to be updated without retraining the model.",
         useCases: [
             "Legal or compliance Q&A over internal policy documents",
             "Real estate listing search and recommendations",
@@ -141,7 +141,7 @@ const TIERS = [
         modelNote: "Claude Opus 4.6 at $15.00/M input · $75.00/M output. Infrastructure and integration costs are additional.",
         stack: ["Claude Opus 4.6", "Multi-agent orchestration layer", "Long-term memory store", "CRM / ERP / API integrations"],
         description:
-            "An agentic system does not merely respond — it plans and executes. The AI decomposes a user goal into sub-tasks, selects and calls tools (APIs, databases, calendars, CRM systems), evaluates intermediate results, and iterates until the objective is met. It maintains memory across sessions and can initiate follow-up actions autonomously. This architecture is required when the chatbot must operate as a digital team member — not just an information service.",
+            "An <span class='tt' data-def='AI that can plan, reason, and execute tasks autonomously.'>agentic</span> system does not merely respond — it plans and executes. The AI decomposes a user goal into sub-tasks, selects and calls tools (APIs, databases, calendars, CRM systems), evaluates intermediate results, and iterates until the objective is met. It maintains memory across sessions and can initiate follow-up actions autonomously. This architecture is required when the chatbot must operate as a digital team member — not just an information service.",
         useCases: [
             "Autonomous sales pipeline agent with CRM updates and follow-up scheduling",
             "IT helpdesk agent that opens, routes, and resolves tickets without human handoff",
@@ -219,7 +219,7 @@ const QUESTIONS = [
     },
     {
         id: "budget",
-        text: "What is your monthly operating budget for this system — API, hosting, and maintenance combined?",
+        text: "What is your monthly operating budget for this system — <span class='tt' data-def='The fees paid to AI providers for processing text.'>API</span>, hosting, and maintenance combined?",
         options: [
             { label: "Starter: under PKR 50,000 / month", scores: [3, 1, 0, 0] },
             { label: "Growth: PKR 50,000 – 200,000 / month", scores: [1, 3, 1, 0] },
@@ -1060,6 +1060,35 @@ export default function App() {
           .matrix-label { width: 120px !important; }
           .tabs-container { display: none !important; }
           .hamburger { display: flex !important; }
+          .floating-cta { bottom: 16px !important; right: 16px !important; left: 16px !important; width: auto !important; border-radius: 8px !important; }
+        }
+        
+        .floating-cta {
+          position: fixed; bottom: 32px; right: 32px;
+          background: var(--accent); color: #fff;
+          padding: 14px 24px; border-radius: 40px;
+          display: flex; alignItems: center; gap: 12px;
+          box-shadow: 0 8px 32px rgba(251,12,12,0.3);
+          cursor: pointer; z-index: 100;
+          text-decoration: none; font-weight: 600; font-size: 14px;
+          transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .floating-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(251,12,12,0.4); }
+        
+        .tt {
+          border-bottom: 1px dotted var(--accent);
+          cursor: help; position: relative;
+          display: inline-block;
+        }
+        .tt:hover::after {
+          content: attr(data-def);
+          position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%);
+          background: var(--s2); border: 1px solid var(--border2);
+          color: var(--text); padding: 10px 14px; border-radius: 4px;
+          font-size: 11px; width: 220px; line-height: 1.5;
+          z-index: 200; box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+          pointer-events: none; text-align: left;
+          font-family: var(--font); font-weight: 400; font-style: normal;
         }
         
         .hamburger {
@@ -1251,6 +1280,22 @@ export default function App() {
                                                     <div className="serif" style={{ fontSize: 14, fontWeight: 700, color: "var(--text)" }}>{item.v}</div>
                                                 </div>
                                             ))}
+                                        </div>
+                                        
+                                        <div style={{ marginTop: 24, paddingTop: 18, borderTop: "1px solid var(--border)" }}>
+                                            <div className="sl" style={{ marginBottom: 12 }}>Your Path to Launch</div>
+                                            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                                                {[
+                                                    `1. Project Scoping & Data Audit (${result.tier.timeline.split(' ')[0]} weeks)`,
+                                                    "2. Environment Setup & Model Configuration",
+                                                    "3. Integration & Red-Teaming Phase",
+                                                    "4. Staging Validation & User Acceptance",
+                                                ].map((step, i) => (
+                                                    <div key={i} style={{ fontSize: 12, color: "var(--sub)", display: "flex", gap: 10 }}>
+                                                        <span style={{ color: "var(--accent)" }}>✓</span> {step}
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
 
@@ -1573,6 +1618,12 @@ export default function App() {
                     </div>
                 </div>
             </div>
+
+            {/* FLOATING CTA */}
+            <a href="mailto:operations@insurgo.systems" className="floating-cta">
+                <span style={{ fontSize: 18 }}>📅</span>
+                Book Scoping Call
+            </a>
         </>
     );
 }
