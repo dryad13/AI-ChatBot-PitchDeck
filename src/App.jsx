@@ -1131,27 +1131,24 @@ export default function App() {
           display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
         }
         .tier-accordion-hd {
-          background: var(--adim); border: 1px solid var(--accent);
-          padding: 14px 22px; cursor: pointer;
+          background: var(--s2); border: 1px solid var(--border);
+          padding: 16px 20px; cursor: pointer;
           display: flex; align-items: center; justify-content: space-between;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          border-radius: 100px;
-          margin-bottom: 8px;
-          box-shadow: 0 4px 15px rgba(251,12,12,0.08);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          border-radius: 8px;
+          margin-bottom: 6px;
         }
-        .tier-accordion-hd:hover { background: rgba(251,12,12,0.15); transform: translateY(-1px); }
-        .tier-accordion-hd.active { background: var(--accent); border-color: var(--accent); }
+        .tier-accordion-hd:hover { border-color: var(--border2); background: var(--adim); }
+        .tier-accordion-hd.active { border-color: var(--accent); background: var(--adim); }
         .expand-btn {
-          font-family: var(--mono); font-size: 8px; color: var(--accent);
-          text-transform: uppercase; letter-spacing: 0.14em;
-          display: flex; align-items: center; gap: 8px;
-          padding: 6px 14px; border: 1px solid rgba(251,12,12,0.3);
-          border-radius: 100px; transition: all 0.2s;
-          background: rgba(255,255,255,0.05);
+          width: 28px; height: 28px; border-radius: 50%;
+          border: 1px solid var(--border2);
+          display: flex; align-items: center; justify-content: center;
+          transition: all 0.2s; color: var(--dim);
+          background: rgba(255,255,255,0.03);
         }
-        .active .expand-btn { background: #fff; color: var(--accent); border-color: #fff; }
-        .active .tier-name { color: #fff !important; }
-        .active .tier-label { color: rgba(255,255,255,0.8) !important; }
+        .active .expand-btn { border-color: var(--accent); color: var(--accent); transform: rotate(45deg); }
+        .active .tier-name { color: var(--accent) !important; }
         .modal-overlay {
           position: fixed; top: 0; left: 0; right: 0; bottom: 0;
           background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
@@ -1519,20 +1516,19 @@ export default function App() {
                                                 className={`tier-accordion-hd mobile-only ${isExpanded ? "active" : ""}`}
                                                 onClick={() => setExpanded(isExpanded ? null : t.id)}
                                             >
-                                                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                                                    <span className="mono tier-label" style={{ fontSize: 9, color: "var(--accent)", transition: "color 0.2s" }}>{t.label}</span>
-                                                    <span className="serif tier-name" style={{ fontSize: 14, fontWeight: 700, color: "var(--text)", transition: "color 0.2s" }}>{t.name}</span>
+                                                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                                                    <span className="mono tier-label" style={{ fontSize: 9, color: "var(--dim)" }}>{t.label}</span>
+                                                    <span className="serif tier-name" style={{ fontSize: 14, fontWeight: 700, color: "var(--text)", transition: "all 0.2s" }}>{t.name}</span>
                                                 </div>
                                                 <div className="expand-btn">
-                                                    {isExpanded ? "Close" : "Details"}
-                                                    <span style={{ fontSize: 10, transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>▼</span>
+                                                    <span style={{ fontSize: 16, fontWeight: 300 }}>+</span>
                                                 </div>
                                             </div>
 
                                             <div 
                                                 className={`tier-card ${isTarget ? "selected" : ""} ${!isExpanded ? "desktop-only" : "fade"}`} 
                                                 onClick={() => setTierDetail(t)}
-                                                style={isExpanded && window.innerWidth <= 640 ? { borderTop: "1px solid var(--border)", marginTop: 4, borderRadius: 12 } : {}}
+                                                style={isExpanded && window.innerWidth <= 640 ? { borderTop: "none", marginTop: -6, paddingTop: 30, borderTopLeftRadius: 0, borderTopRightRadius: 0, borderBottomLeftRadius: 8, borderBottomRightRadius: 8 } : {}}
                                             >
                                                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
                                                     <div>
@@ -1560,18 +1556,18 @@ export default function App() {
                                                     </div>
                                                 </div>
 
-                                                <div style={{ marginTop: 22 }}>
+                                                <div style={{ marginTop: 24 }}>
                                                     <button 
                                                         className="cta" 
                                                         style={{ 
                                                             width: "100%", padding: "12px 0", 
-                                                            background: "var(--adim)", border: "1px solid var(--accent)",
-                                                            color: "var(--accent)", fontSize: 11, fontWeight: 600,
-                                                            fontFamily: "var(--mono)", letterSpacing: "0.1em",
-                                                            borderRadius: 100
+                                                            background: "transparent", border: "1px solid var(--border2)",
+                                                            color: "var(--sub)", fontSize: 11, fontWeight: 600,
+                                                            fontFamily: "var(--mono)", letterSpacing: "0.08em",
+                                                            borderRadius: 8
                                                         }}
                                                     >
-                                                        TECHNICAL SPECIFICATIONS
+                                                        TECHNICAL SPECS
                                                     </button>
                                                 </div>
                                             </div>
