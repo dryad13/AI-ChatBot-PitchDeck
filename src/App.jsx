@@ -943,7 +943,7 @@ export default function App() {
     const [msgs, setMsgs] = useState(15000);
     const [currency, setCurrency] = useState("PKR");
     const [menuOpen, setMenuOpen] = useState(false);
-    const [auth, setAuth] = useState(false);
+    const [auth, setAuth] = useState(localStorage.getItem("insurgo_auth") === "true");
     const [pass, setPass] = useState("");
     const [error, setError] = useState(false);
 
@@ -957,6 +957,7 @@ export default function App() {
     function handleAuth(e) {
         e?.preventDefault();
         if (pass === "Insurgo2026") {
+            localStorage.setItem("insurgo_auth", "true");
             setAuth(true);
             // Trigger notification
             fetch("/.netlify/functions/notify", { method: "POST" }).catch(() => {});
