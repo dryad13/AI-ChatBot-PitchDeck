@@ -58,7 +58,7 @@ const TIERS = [
         modelNote: "Claude Sonnet 4.6 at $3.00/M input · $15.00/M output. GPT-5.2 at $1.75/M input · $14.00/M output.",
         stack: ["Claude Sonnet 4.6 or GPT-5.2", "Next.js frontend", "Node.js API layer", "Supabase or Firebase"],
         description:
-            "An LLM-powered bot routes each user message directly to a large language model. A system prompt defines its persona, scope, and constraints. The model reasons over the conversation history and generates a contextually appropriate response. No external knowledge retrieval is involved — the model responds from its training and the active context window.",
+            "An <span class='tt' data-def='Large Language Model. An AI model trained on massive amounts of text to understand and generate human-like language.'>LLM</span>-powered bot routes each user message directly to a modern foundation model. A system prompt defines its persona, scope, and constraints. The model reasons over the conversation history and generates a contextually appropriate response. No external knowledge retrieval is involved — the model responds from its general training and the active <span class='tt' data-def='The amount of text the model can consider at once. Like a short-term memory buffer.'>context window</span>.",
         useCases: [
             "Customer support for general product enquiries",
             "Sales conversation and objection handling",
