@@ -1637,9 +1637,10 @@ export default function App() {
                             API estimates at 500 input / 300 output tokens per exchange. Monthly API costs exclude infrastructure hosting and third-party integration fees.
                         </div>
                     </div>
-                </>
-                )}
-            </div>
+                </div>
+            </>
+            )}
+        </div>
 
             {/* FLOATING CTA */}
             <div onClick={() => setTab("book")} className="floating-cta">
