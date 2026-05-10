@@ -1120,8 +1120,9 @@ export default function App() {
           background: var(--s1); border: 1px solid var(--border);
           display: flex; flex-direction: column;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          padding: 20px;
-          min-height: 240px;
+          padding: 24px;
+          border-radius: 12px;
+          min-height: 250px;
           cursor: pointer;
           position: relative;
         }
@@ -1132,19 +1133,19 @@ export default function App() {
         }
         .tier-accordion-hd {
           background: var(--s1); border: 1px solid var(--border);
-          padding: 18px 20px; cursor: pointer;
+          padding: 20px 24px; cursor: pointer;
           display: flex; align-items: center; justify-content: space-between;
           transition: all 0.25s ease;
-          border-radius: 4px;
+          border-radius: 30px;
         }
         .tier-accordion-hd:hover { border-color: var(--accent); background: var(--s2); }
         .tier-accordion-hd.active { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-color: var(--accent); background: var(--adim); }
         .expand-btn {
           font-family: var(--mono); font-size: 8px; color: var(--accent);
-          text-transform: uppercase; letter-spacing: 0.1em;
+          text-transform: uppercase; letter-spacing: 0.12em;
           display: flex; align-items: center; gap: 8px;
-          padding: 4px 10px; border: 1px solid var(--border);
-          border-radius: 12px; transition: all 0.2s;
+          padding: 6px 14px; border: 1px solid var(--border);
+          border-radius: 99px; transition: all 0.2s;
         }
         .active .expand-btn { background: var(--accent); color: #fff; border-color: var(--accent); }
         .modal-overlay {
@@ -1520,12 +1521,12 @@ export default function App() {
                                             <div 
                                                 className={`tier-card ${isTarget ? "selected" : ""} ${!isExpanded ? "desktop-only" : "fade"}`} 
                                                 onClick={() => setTierDetail(t)}
-                                                style={isExpanded && window.innerWidth <= 640 ? { borderTop: "none", borderTopLeftRadius: 0, borderTopRightRadius: 0 } : {}}
+                                                style={isExpanded && window.innerWidth <= 640 ? { borderTop: "none", borderTopLeftRadius: 0, borderTopRightRadius: 0, borderBottomLeftRadius: 12, borderBottomRightRadius: 12 } : {}}
                                             >
                                                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
                                                     <div>
                                                         <div className="mono" style={{ fontSize: 8, color: "var(--accent)", letterSpacing: "0.1em" }}>{t.label}</div>
-                                                        <h3 className="serif" style={{ fontSize: 16, fontWeight: 700, marginTop: 2 }}>{t.name}</h3>
+                                                        <h3 className="serif" style={{ fontSize: 17, fontWeight: 700, marginTop: 4 }}>{t.name}</h3>
                                                     </div>
                                                     {isTarget && <span style={{ fontSize: 12 }}>🎯</span>}
                                                 </div>
