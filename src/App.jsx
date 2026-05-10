@@ -1131,24 +1131,27 @@ export default function App() {
           display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
         }
         .tier-accordion-hd {
-          background: var(--s1); border: 1px solid var(--border);
-          padding: 18px 24px; cursor: pointer;
+          background: var(--adim); border: 1px solid var(--accent);
+          padding: 14px 22px; cursor: pointer;
           display: flex; align-items: center; justify-content: space-between;
-          transition: all 0.25s ease;
-          border-radius: 12px;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          border-radius: 100px;
+          margin-bottom: 8px;
+          box-shadow: 0 4px 15px rgba(251,12,12,0.08);
         }
-        .tier-accordion-hd:hover { border-color: var(--accent); background: var(--s2); }
-        .tier-accordion-hd.active { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-color: var(--accent); background: var(--adim); }
+        .tier-accordion-hd:hover { background: rgba(251,12,12,0.15); transform: translateY(-1px); }
+        .tier-accordion-hd.active { background: var(--accent); border-color: var(--accent); }
         .expand-btn {
           font-family: var(--mono); font-size: 8px; color: var(--accent);
           text-transform: uppercase; letter-spacing: 0.14em;
           display: flex; align-items: center; gap: 8px;
-          padding: 8px 16px; border: 1px solid var(--border);
-          border-radius: 8px; transition: all 0.2s;
-          background: var(--s2);
+          padding: 6px 14px; border: 1px solid rgba(251,12,12,0.3);
+          border-radius: 100px; transition: all 0.2s;
+          background: rgba(255,255,255,0.05);
         }
-        .expand-btn:hover { border-color: var(--accent); background: var(--adim); }
-        .active .expand-btn { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .active .expand-btn { background: #fff; color: var(--accent); border-color: #fff; }
+        .active .tier-name { color: #fff !important; }
+        .active .tier-label { color: rgba(255,255,255,0.8) !important; }
         .modal-overlay {
           position: fixed; top: 0; left: 0; right: 0; bottom: 0;
           background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
@@ -1516,9 +1519,9 @@ export default function App() {
                                                 className={`tier-accordion-hd mobile-only ${isExpanded ? "active" : ""}`}
                                                 onClick={() => setExpanded(isExpanded ? null : t.id)}
                                             >
-                                                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                                                    <span className="mono" style={{ fontSize: 9, color: "var(--accent)" }}>{t.label}</span>
-                                                    <span className="serif" style={{ fontSize: 14, fontWeight: 700 }}>{t.name}</span>
+                                                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                                                    <span className="mono tier-label" style={{ fontSize: 9, color: "var(--accent)", transition: "color 0.2s" }}>{t.label}</span>
+                                                    <span className="serif tier-name" style={{ fontSize: 14, fontWeight: 700, color: "var(--text)", transition: "color 0.2s" }}>{t.name}</span>
                                                 </div>
                                                 <div className="expand-btn">
                                                     {isExpanded ? "Close" : "Details"}
@@ -1529,7 +1532,7 @@ export default function App() {
                                             <div 
                                                 className={`tier-card ${isTarget ? "selected" : ""} ${!isExpanded ? "desktop-only" : "fade"}`} 
                                                 onClick={() => setTierDetail(t)}
-                                                style={isExpanded && window.innerWidth <= 640 ? { borderTop: "none", borderTopLeftRadius: 0, borderTopRightRadius: 0, borderBottomLeftRadius: 12, borderBottomRightRadius: 12 } : {}}
+                                                style={isExpanded && window.innerWidth <= 640 ? { borderTop: "1px solid var(--border)", marginTop: 4, borderRadius: 12 } : {}}
                                             >
                                                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
                                                     <div>
@@ -1561,13 +1564,14 @@ export default function App() {
                                                     <button 
                                                         className="cta" 
                                                         style={{ 
-                                                            width: "100%", padding: "10px 0", 
-                                                            background: "transparent", border: "1px solid var(--border2)",
-                                                            color: "var(--dim)", fontSize: 11, fontWeight: 600,
-                                                            fontFamily: "var(--mono)", letterSpacing: "0.05em"
+                                                            width: "100%", padding: "12px 0", 
+                                                            background: "var(--adim)", border: "1px solid var(--accent)",
+                                                            color: "var(--accent)", fontSize: 11, fontWeight: 600,
+                                                            fontFamily: "var(--mono)", letterSpacing: "0.1em",
+                                                            borderRadius: 100
                                                         }}
                                                     >
-                                                        VIEW SPECIFICATIONS
+                                                        TECHNICAL SPECIFICATIONS
                                                     </button>
                                                 </div>
                                             </div>
