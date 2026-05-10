@@ -183,10 +183,10 @@ const MODELS = [
 const QUESTIONS = [
     {
         id: "goal",
-        text: "What is the primary goal of this chatbot?",
+        text: "What is the primary goal of your AI Chatbot?",
         options: [
-            { label: "Automate repetitive FAQ and scripted conversation flows", scores: [3, 0, 0, 0] },
-            { label: "Hold natural, open-ended conversations with customers", scores: [0, 3, 0, 0] },
+            { label: "Simple lead generation and basic FAQ", scores: [3, 1, 0, 0] },
+            { label: "Engaging, conversational customer support", scores: [0, 3, 1, 0] },
             { label: "Answer questions based on our internal documents and data", scores: [0, 0, 3, 0] },
             { label: "Automate multi-step tasks and take actions inside systems", scores: [0, 0, 0, 3] },
         ],
@@ -208,6 +208,43 @@ const QUESTIONS = [
         ],
     },
     {
+        id: "integration",
+        text: "What level of system integration is required?",
+        options: [
+            { label: "None — standalone chatbot", scores: [3, 2, 0, 0] },
+            { label: "Basic — Google Sheets, Zapier, or Email triggers", scores: [1, 3, 2, 0] },
+            { label: "Deep — CRM (HubSpot/Salesforce) or ERP integration", scores: [0, 0, 1, 3] },
+            { label: "Custom — Legacy databases or internal private APIs", scores: [0, 0, 0, 3] },
+        ],
+    },
+    {
+        id: "language",
+        text: "Which languages does the bot need to support natively?",
+        options: [
+            { label: "English only", scores: [2, 1, 1, 1] },
+            { label: "Multilingual (Urdu, Arabic, etc.) with high accuracy", scores: [0, 2, 3, 3] },
+            { label: "Mixed-language (Roman Urdu, slang, etc.)", scores: [0, 1, 2, 3] },
+        ],
+    },
+    {
+        id: "memory",
+        text: "Does the bot need to remember previous conversations with specific users over time?",
+        options: [
+            { label: "No — every conversation can start fresh", scores: [3, 2, 1, 0] },
+            { label: "Short-term — memory of the current session only", scores: [1, 3, 2, 0] },
+            { label: "Long-term — persistent memory across weeks or months", scores: [0, 0, 1, 3] },
+        ],
+    },
+    {
+        id: "handover",
+        text: "How should the bot handle complex queries it can't answer?",
+        options: [
+            { label: "Just apologize and suggest a contact email", scores: [3, 2, 0, 0] },
+            { label: "Smoothly transfer the chat to a live human agent", scores: [1, 1, 3, 2] },
+            { label: "Autonomous reasoning to find a solution", scores: [0, 0, 1, 3] },
+        ],
+    },
+    {
         id: "volume",
         text: "What is your expected monthly conversation volume?",
         options: [
@@ -215,6 +252,15 @@ const QUESTIONS = [
             { label: "5,000 – 50,000 conversations", scores: [1, 3, 2, 1] },
             { label: "50,000 – 200,000 conversations", scores: [0, 1, 2, 2] },
             { label: "Over 200,000 conversations", scores: [0, 0, 1, 3] },
+        ],
+    },
+    {
+        id: "accuracy",
+        text: "What is the tolerance for AI 'hallucinations' or creative errors?",
+        options: [
+            { label: "Creative freedom is okay (e.g., a storyteller/persona)", scores: [1, 3, 1, 1] },
+            { label: "Low tolerance — must be strictly factual", scores: [0, 1, 3, 2] },
+            { label: "Zero tolerance — business-critical data (Banking/Health)", scores: [0, 0, 1, 3] },
         ],
     },
     {
@@ -235,6 +281,15 @@ const QUESTIONS = [
             { label: "1 – 3 months", scores: [1, 3, 2, 0] },
             { label: "3 – 6 months", scores: [0, 1, 3, 2] },
             { label: "Flexible — quality over speed", scores: [0, 0, 1, 2] },
+        ],
+    },
+    {
+        id: "security",
+        text: "What are your data security requirements?",
+        options: [
+            { label: "Standard — secure cloud hosting is enough", scores: [3, 2, 1, 0] },
+            { label: "High — PII redaction and advanced encryption", scores: [0, 1, 3, 2] },
+            { label: "Compliance-Grade — On-prem hosting or strict ISO/GDPR", scores: [0, 0, 1, 3] },
         ],
     },
 ];
