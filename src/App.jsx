@@ -857,6 +857,7 @@ const GLOSSARY_CLEAN = GLOSSARY.map(cat => ({
 
 function GlossaryTab() {
     const [query, setQuery] = useState("");
+    const [expanded, setExpanded] = useState({});
     const q = query.trim().toLowerCase();
 
     const filtered = GLOSSARY_CLEAN.map(cat => ({
@@ -923,48 +924,63 @@ function GlossaryTab() {
                 </div>
             )}
 
-            {filtered.map((cat, ci) => (
-                <div key={ci} style={{ marginBottom: 44 }}>
-                    <div style={{
-                        display: "flex", alignItems: "center", gap: 12, marginBottom: 20,
-                        paddingBottom: 10, borderBottom: "1px solid var(--border)",
-                    }}>
-                        <span style={{ width: 3, height: 14, background: "var(--accent)", display: "inline-block", flexShrink: 0 }} />
-                        <span className="serif" style={{ fontSize: 15, fontWeight: 700, color: "var(--text)" }}>{cat.category}</span>
-                        <span className="mono" style={{ fontSize: 9, color: "var(--dim)", marginLeft: 4 }}>
-                            {cat.terms.length} {cat.terms.length === 1 ? "term" : "terms"}
-                        </span>
-                    </div>
+            {filtered.map((cat, ci) => {
+                const isOpen = query || expanded[ci];
+                return (
+                    <div key={ci} style={{ marginBottom: isOpen ? 44 : 12 }}>
+                        <div 
+                            onClick={() => setExpanded(prev => ({ ...prev, [ci]: !prev[ci] }))}
+                            style={{
+                                display: "flex", alignItems: "center", gap: 12, marginBottom: isOpen ? 20 : 0,
+                                paddingBottom: 10, borderBottom: "1px solid var(--border)",
+                                cursor: "pointer", transition: "all 0.2s"
+                            }}
+                        >
+                            <span style={{ 
+                                width: 0, height: 0, 
+                                borderLeft: "5px solid transparent",
+                                borderRight: "5px solid transparent",
+                                borderTop: `6px solid ${isOpen ? "var(--accent)" : "var(--dim)"}`,
+                                transform: isOpen ? "rotate(0deg)" : "rotate(-90deg)",
+                                transition: "transform 0.2s",
+                                display: "inline-block", flexShrink: 0 
+                            }} />
+                            <span className="serif" style={{ fontSize: 15, fontWeight: 700, color: isOpen ? "var(--text)" : "var(--sub)" }}>{cat.category}</span>
+                            <span className="mono" style={{ fontSize: 9, color: "var(--dim)", marginLeft: 4 }}>
+                                {cat.terms.length} {cat.terms.length === 1 ? "term" : "terms"}
+                            </span>
+                        </div>
 
-                    <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-                        {cat.terms.map((t, ti) => (
-                            <div key={ti} className="glossary-item" style={{
-                                display: "grid",
-                                gridTemplateColumns: "200px 1fr",
-                                gap: 0,
-                                borderBottom: "1px solid var(--border)",
-                                padding: "18px 0",
-                            }}>
-                                {/* Term + abbr */}
-                                <div style={{ paddingRight: 24 }}>
-                                    <div className="serif" style={{ fontSize: 14, fontWeight: 700, color: "var(--text)", marginBottom: t.abbr ? 4 : 0, lineHeight: 1.3 }}>
-                                        {highlight(t.term, q)}
-                                    </div>
-                                    {t.abbr && (
-                                        <div className="mono" style={{ fontSize: 9, color: "var(--accent)", letterSpacing: "0.08em", lineHeight: 1.5 }}>
-                                            {highlight(t.abbr, q)}
+                        {isOpen && (
+                            <div className="fade" style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+                                {cat.terms.map((t, ti) => (
+                                    <div key={ti} className="glossary-item" style={{
+                                        display: "grid",
+                                        gridTemplateColumns: "200px 1fr",
+                                        gap: 0,
+                                        borderBottom: "1px solid var(--border)",
+                                        padding: "18px 0",
+                                    }}>
+                                        <div style={{ paddingRight: 24 }}>
+                                            <div className="serif" style={{ fontSize: 14, fontWeight: 700, color: "var(--text)", marginBottom: t.abbr ? 4 : 0, lineHeight: 1.3 }}>
+                                                {highlight(t.term, q)}
+                                            </div>
+                                            {t.abbr && (
+                                                <div className="mono" style={{ fontSize: 9, color: "var(--accent)", letterSpacing: "0.08em", lineHeight: 1.5 }}>
+                                                    {highlight(t.abbr, q)}
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                </div>
-                                {/* Definition */}
-                                <div style={{ fontSize: 13, color: "var(--sub)", lineHeight: 1.8 }}>
-                                    {highlight(t.definition, q)}
-                                </div>
+                                        <div style={{ fontSize: 13, color: "var(--sub)", lineHeight: 1.8 }}>
+                                            {highlight(t.definition, q)}
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
+                        )}
                     </div>
-                </div>
-            ))}
+                );
+            })}
 
             <div className="mono" style={{ marginTop: 16, fontSize: 9, color: "var(--dim)", lineHeight: 1.9 }}>
                 Definitions written for a non-technical audience. Some simplifications apply.
