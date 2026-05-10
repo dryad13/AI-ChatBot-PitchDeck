@@ -304,95 +304,57 @@ function fmt(usd, currency) {
         : "$" + usd.toLocaleString();
 }
 
-/* ─── MERMAID LOADER ────────────────────────────── */
-let mermaidReady = null;
 
-function loadMermaid() {
-    if (mermaidReady) return mermaidReady;
-    mermaidReady = new Promise((resolve) => {
-        if (window.mermaid) { resolve(window.mermaid); return; }
-        const s = document.createElement("script");
-        s.src = "https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js";
-        s.onload = () => {
-            window.mermaid.initialize({
-                startOnLoad: false,
-                theme: "base",
-                themeVariables: {
-                    fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
-                    fontSize: "13px",
-                    primaryColor: "#181818",
-                    primaryBorderColor: "#2e2e2e",
-                    primaryTextColor: "#e6e4df",
-                    lineColor: "#444444",
-                    edgeLabelBackground: "#101010",
-                    secondaryColor: "#141414",
-                    tertiaryColor: "#141414",
-                    background: "#101010",
-                    mainBkg: "#181818",
-                    nodeBorder: "#333333",
-                    clusterBkg: "#141414",
-                    clusterBorder: "#2e2e2e",
-                    titleColor: "#e6e4df",
-                    attributeBackgroundColorEven: "#181818",
-                    attributeBackgroundColorOdd: "#141414",
-                },
-            });
-            resolve(window.mermaid);
-        };
-        document.head.appendChild(s);
-    });
-    return mermaidReady;
-}
-
-let diagramCounter = 0;
 
 function MermaidDiagram({ chart, caption }) {
-    const ref = useRef(null);
-    const id = useRef("md_" + ++diagramCounter).current;
-    const [err, setErr] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [err, setErr] = useState(false);
 
-    useEffect(() => {
-        let cancelled = false;
-        loadMermaid().then(async (m) => {
-            if (cancelled || !ref.current) return;
-            try {
-                const { svg } = await m.render(id, chart);
-                if (!cancelled && ref.current) {
-                    ref.current.innerHTML = svg;
-                    // make SVG responsive
-                    const svgEl = ref.current.querySelector("svg");
-                    if (svgEl) {
-                        svgEl.removeAttribute("height");
-                        svgEl.style.maxWidth = "100%";
-                        svgEl.style.height = "auto";
-                    }
-                    setLoading(false);
-                }
-            } catch (e) {
-                if (!cancelled) { setErr(e.message); setLoading(false); }
-            }
-        });
-        return () => { cancelled = true; };
-    }, [chart, id]);
+    const encoded = btoa(JSON.stringify({ 
+        code: chart, 
+        mermaid: { theme: "dark", background: "transparent" } 
+    }));
+    const url = `https://mermaid.ink/svg/${encoded}`;
 
     return (
-        <div>
-            <div style={{ position: "relative", minHeight: loading ? 120 : 0 }}>
-                {loading && !err && (
-                    <div style={{ padding: "40px 0", textAlign: "center", color: "var(--dim)", fontSize: 12, fontFamily: "var(--mono)", letterSpacing: "0.08em" }}>
-                        Rendering diagram…
+        <div style={{ margin: "16px 0" }}>
+            <div style={{ 
+                position: "relative", 
+                background: "rgba(255,255,255,0.02)", 
+                border: "1px solid var(--border)",
+                borderRadius: 8,
+                overflow: "hidden",
+                minHeight: loading ? 200 : 0
+            }}>
+                {loading && (
+                    <div style={{ 
+                        position: "absolute", inset: 0, display: "flex", 
+                        alignItems: "center", justifyContent: "center",
+                        fontSize: 11, color: "var(--dim)", fontFamily: "var(--mono)"
+                    }}>
+                        GENERATING ARCHITECTURE...
                     </div>
                 )}
+                <img 
+                    src={url} 
+                    alt={caption || "Architecture Diagram"}
+                    style={{ 
+                        display: loading ? "none" : "block", 
+                        width: "100%", height: "auto", 
+                        padding: "20px",
+                        filter: "brightness(0.9) contrast(1.1)"
+                    }}
+                    onLoad={() => setLoading(false)}
+                    onError={() => { setErr(true); setLoading(false); }}
+                />
                 {err && (
-                    <div style={{ padding: "16px", background: "var(--s2)", border: "1px solid var(--border)", color: "var(--dim)", fontSize: 12 }}>
-                        Could not render diagram.
+                    <div style={{ padding: "40px", textAlign: "center", color: "var(--dim)", fontSize: 12 }}>
+                        Diagram visualization unavailable.
                     </div>
                 )}
-                <div ref={ref} style={{ display: loading ? "none" : "block" }} />
             </div>
             {caption && (
-                <div style={{ marginTop: 10, fontSize: 11.5, color: "var(--dim)", fontStyle: "italic", lineHeight: 1.6 }}>
+                <div style={{ marginTop: 10, fontSize: 11.5, color: "var(--dim)", fontStyle: "italic", lineHeight: 1.6, textAlign: "center" }}>
                     {caption}
                 </div>
             )}
