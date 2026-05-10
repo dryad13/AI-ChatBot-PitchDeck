@@ -1129,6 +1129,14 @@ export default function App() {
         .tiers-grid {
           display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
         }
+        .tier-accordion-hd {
+          background: var(--s1); border: 1px solid var(--border);
+          padding: 16px; cursor: pointer;
+          display: flex; align-items: center; justify-content: space-between;
+          transition: all 0.2s;
+        }
+        .tier-accordion-hd:hover { border-color: var(--accent); }
+        .tier-accordion-hd.active { border-bottom: none; border-color: var(--accent); background: var(--adim); }
         .modal-overlay {
           position: fixed; top: 0; left: 0; right: 0; bottom: 0;
           background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
@@ -1175,6 +1183,7 @@ export default function App() {
         @media (max-width: 640px) {
           .mobile-only { display: inline; }
           .desktop-only { display: none; }
+          .tiers-grid { grid-template-columns: 1fr !important; }
           .glossary-item { grid-template-columns: 1fr !important; gap: 8px !important; }
           .header-content { flex-direction: column !important; align-items: center !important; text-align: center !important; }
           .header-content h1 { text-align: center !important; }
@@ -1480,40 +1489,64 @@ export default function App() {
                             <div className="tiers-grid">
                                 {TIERS.map(t => {
                                     const isTarget = result?.tier?.id === t.id;
+                                    const isExpanded = expanded === t.id;
+                                    
                                     return (
-                                        <div key={t.id} className={`tier-card ${isTarget ? "selected" : ""}`} onClick={() => setTierDetail(t)}>
-                                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
-                                                <div>
-                                                    <div className="mono" style={{ fontSize: 8, color: "var(--accent)", letterSpacing: "0.1em" }}>{t.label}</div>
-                                                    <h3 className="serif" style={{ fontSize: 16, fontWeight: 700, marginTop: 2 }}>{t.name}</h3>
+                                        <div key={t.id}>
+                                            {/* Mobile Accordion Header */}
+                                            <div 
+                                                className={`tier-accordion-hd mobile-only ${isExpanded ? "active" : ""}`}
+                                                onClick={() => setExpanded(isExpanded ? null : t.id)}
+                                            >
+                                                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                                                    <span className="mono" style={{ fontSize: 9, color: "var(--accent)" }}>{t.label}</span>
+                                                    <span className="serif" style={{ fontSize: 14, fontWeight: 700 }}>{t.name}</span>
                                                 </div>
-                                                {isTarget && <span style={{ fontSize: 12 }}>🎯</span>}
-                                            </div>
-                                            
-                                            <div style={{ flex: 1 }}>
-                                                <p style={{ fontSize: 11, color: "var(--sub)", lineHeight: 1.5, marginBottom: 16 }}>
-                                                    {t.subtitle}
-                                                </p>
-                                                
-                                                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 12px" }}>
-                                                    {[
-                                                        { l: "Timeline", v: t.timeline },
-                                                        { l: "Dev", v: `${fmt(t.devUSD[0], currency)}+` },
-                                                    ].map(item => (
-                                                        <div key={item.l}>
-                                                            <div className="mono" style={{ fontSize: 7, color: "var(--dim)", textTransform: "uppercase" }}>{item.l}</div>
-                                                            <div style={{ fontSize: 11, color: "var(--text)", fontWeight: 500 }}>{item.v}</div>
-                                                        </div>
-                                                    ))}
-                                                </div>
+                                                <span style={{ fontSize: 12, transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>▼</span>
                                             </div>
 
-                                            <div style={{ marginTop: 14, paddingTop: 10, borderTop: "1px solid var(--border)" }}>
-                                                <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-                                                    {t.stack.slice(0, 3).map(s => (
-                                                        <span key={s} style={{ fontSize: 8, color: "var(--dim)", background: "var(--s2)", padding: "1px 4px", border: "1px solid var(--border)" }}>{s}</span>
-                                                    ))}
-                                                    {t.stack.length > 3 && <span style={{ fontSize: 8, color: "var(--dim)" }}>+</span>}
+                                            {/* Card (Desktop: Always, Mobile: only if expanded) */}
+                                            <div 
+                                                className={`tier-card ${isTarget ? "selected" : ""} ${!isExpanded ? "desktop-only" : "fade"}`} 
+                                                onClick={() => {
+                                                    if (isExpanded && window.innerWidth <= 640) return; // don't open modal if already expanded in accordion
+                                                    setTierDetail(t);
+                                                }}
+                                                style={isExpanded && window.innerWidth <= 640 ? { borderTop: "none" } : {}}
+                                            >
+                                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+                                                    <div>
+                                                        <div className="mono" style={{ fontSize: 8, color: "var(--accent)", letterSpacing: "0.1em" }}>{t.label}</div>
+                                                        <h3 className="serif" style={{ fontSize: 16, fontWeight: 700, marginTop: 2 }}>{t.name}</h3>
+                                                    </div>
+                                                    {isTarget && <span style={{ fontSize: 12 }}>🎯</span>}
+                                                </div>
+                                                
+                                                <div style={{ flex: 1 }}>
+                                                    <p style={{ fontSize: 11, color: "var(--sub)", lineHeight: 1.5, marginBottom: 16 }}>
+                                                        {t.subtitle}
+                                                    </p>
+                                                    
+                                                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 12px" }}>
+                                                        {[
+                                                            { l: "Timeline", v: t.timeline },
+                                                            { l: "Dev", v: `${fmt(t.devUSD[0], currency)}+` },
+                                                        ].map(item => (
+                                                            <div key={item.l}>
+                                                                <div className="mono" style={{ fontSize: 7, color: "var(--dim)", textTransform: "uppercase" }}>{item.l}</div>
+                                                                <div style={{ fontSize: 11, color: "var(--text)", fontWeight: 500 }}>{item.v}</div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+
+                                                <div style={{ marginTop: 14, paddingTop: 10, borderTop: "1px solid var(--border)" }}>
+                                                    <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                                                        {t.stack.slice(0, 3).map(s => (
+                                                            <span key={s} style={{ fontSize: 8, color: "var(--dim)", background: "var(--s2)", padding: "1px 4px", border: "1px solid var(--border)" }}>{s}</span>
+                                                        ))}
+                                                        {t.stack.length > 3 && <span style={{ fontSize: 8, color: "var(--dim)" }}>+</span>}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
