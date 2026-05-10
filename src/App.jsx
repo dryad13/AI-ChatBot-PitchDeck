@@ -1052,14 +1052,25 @@ export default function App() {
         .tab-btn { flex-shrink: 0; }
         
         @media (max-width: 640px) {
+          .mobile-only { display: inline; }
+          .desktop-only { display: none; }
           .glossary-item { grid-template-columns: 1fr !important; gap: 8px !important; }
           .header-content { flex-direction: column !important; align-items: flex-start !important; }
           .tier-hd { flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
           .summary-bar { gap: 16px !important; }
           .comparison-matrix th, .comparison-matrix td { padding: 8px 10px !important; font-size: 11px !important; }
           .matrix-label { width: 120px !important; }
-          .tabs-container { display: none !important; }
-          .hamburger { display: flex !important; }
+          .tabs-container { 
+            display: flex !important; 
+            gap: 12px !important; 
+            justify-content: flex-start !important;
+            padding: 0 10px !important;
+          }
+          .tab-btn { 
+            font-size: 10px !important; 
+            padding: 10px 0 !important;
+            letter-spacing: 0.05em !important;
+          }
           .floating-cta { bottom: 16px !important; right: 16px !important; left: 16px !important; width: auto !important; border-radius: 8px !important; }
         }
         
@@ -1090,33 +1101,6 @@ export default function App() {
           pointer-events: none; text-align: left;
           font-family: var(--font); font-weight: 400; font-style: normal;
         }
-        
-        .hamburger {
-          display: none;
-          width: 32px; height: 32px;
-          flex-direction: column; justify-content: center; gap: 4px;
-          cursor: pointer; padding: 4px;
-          z-index: 100;
-        }
-        .hamburger span { display: block; width: 100%; height: 2px; background: var(--text); transition: 0.2s; }
-        .hamburger.on span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-        .hamburger.on span:nth-child(2) { opacity: 0; }
-        .hamburger.on span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-        
-        .mobile-menu {
-          position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-          background: var(--bg); z-index: 90;
-          display: flex; flexDirection: column; padding: 80px 26px; gap: 20px;
-          transform: translateY(-100%); transition: transform 0.3s ease-in-out;
-        }
-        .mobile-menu.on { transform: translateY(0); }
-        .mobile-item {
-          font-family: var(--mono); font-size: 14px; font-weight: 500;
-          letter-spacing: 0.1em; text-transform: uppercase;
-          color: var(--sub); text-decoration: none; padding: 12px 0;
-          border-bottom: 1px solid var(--border);
-        }
-        .mobile-item.on { color: var(--accent); border-bottom-color: var(--accent); }
       `}} />
 
             <div className="sans" style={{ background: "var(--bg)", color: "var(--text)", minHeight: "100vh" }}>
@@ -1156,38 +1140,21 @@ export default function App() {
                                     </div>
                                     <div className="mono" style={{ fontSize: 9, color: "var(--dim)", marginTop: 5 }}>1 USD = 280 PKR</div>
                                 </div>
-                                <div className={`hamburger ${menuOpen ? "on" : ""}`} onClick={() => setMenuOpen(!menuOpen)}>
-                                    <span /> <span /> <span />
-                                </div>
                             </div>
-                        </div>
-                        
-                        <div className={`mobile-menu ${menuOpen ? "on" : ""}`}>
-                            {[
-                                { id: "quiz", label: "Needs Assessment" },
-                                { id: "guide", label: "Architecture Guide" },
-                                { id: "flows", label: "Flow Diagrams" },
-                                { id: "calc", label: "API Pricing" },
-                                { id: "book", label: "Book a Call" },
-                                { id: "glossary", label: "Glossary" },
-                            ].map(t => (
-                                <div key={t.id} className={`mobile-item ${tab === t.id ? "on" : ""}`} onClick={() => { setTab(t.id); setMenuOpen(false); }}>
-                                    {t.label}
-                                </div>
-                            ))}
                         </div>
 
                         <div className="tabs-container">
                             {[
-                                { id: "quiz", label: "Needs Assessment" },
-                                { id: "guide", label: "Architecture Guide" },
-                                { id: "flows", label: "Flow Diagrams" },
-                                { id: "calc", label: "API Pricing" },
-                                { id: "book", label: "Book a Call" },
-                                { id: "glossary", label: "Glossary" },
+                                { id: "quiz", label: "Quiz", full: "Needs Assessment" },
+                                { id: "guide", label: "Guide", full: "Architecture Guide" },
+                                { id: "flows", label: "Flows", full: "Flow Diagrams" },
+                                { id: "calc", label: "Pricing", full: "API Pricing" },
+                                { id: "book", label: "Book", full: "Book a Call" },
+                                { id: "glossary", label: "Glossary", full: "Glossary" },
                             ].map(t => (
-                                <button key={t.id} className={`tab-btn ${tab === t.id ? "on" : ""}`} onClick={() => setTab(t.id)}>
-                                    {t.label}
+                                <button key={t.id} onClick={() => setTab(t.id)} className={`tab-btn ${tab === t.id ? "on" : ""}`}>
+                                    <span className="desktop-only">{t.full}</span>
+                                    <span className="mobile-only">{t.label}</span>
                                 </button>
                             ))}
                         </div>
