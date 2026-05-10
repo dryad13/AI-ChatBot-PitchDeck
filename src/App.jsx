@@ -89,15 +89,15 @@ const TIERS = [
     {
         id: "rag",
         label: "Tier III",
-        name: "RAG Knowledge Bot",
-        subtitle: "Retrieval-augmented generation grounded in your proprietary documents",
+        name: "Knowledge-Grounded Bot",
+        subtitle: "Expert knowledge base with Retrieval-Augmented Generation (RAG)",
         complexity: "High",
         timeline: "6 – 10 weeks",
         devUSD: [2500, 7000],
         runUSD: [100, 500],
-        model: "Claude Sonnet 4.6",
-        modelNote: "Claude Sonnet 4.6 at $3.00/M input · $15.00/M output. Pinecone vector DB approx. $70/mo base plan.",
-        stack: ["Claude Sonnet 4.6", "LangChain / LlamaIndex", "Pinecone or Weaviate", "Next.js + Tailwind CSS"],
+        model: "Claude 3.5 Sonnet",
+        modelNote: "Claude 3.5 Sonnet at $3.00/M input · $15.00/M output. Pinecone vector DB approx. $70/mo base plan.",
+        stack: ["Claude 3.5 Sonnet", "LangChain / LlamaIndex", "Pinecone or Weaviate", "Next.js + Tailwind CSS"],
         description:
             "A <span class='tt' data-def='Retrieval-Augmented Generation. This grounds the model in your actual documents.'>RAG</span> bot adds a retrieval layer between the user and the language model. When a query arrives, the system searches a <span class='tt' data-def='A database that stores text as mathematical vectors for similarity search.'>vector database</span> of your indexed documents, extracts the most relevant passages, and passes them as context to the model. The model then generates a response grounded in your actual content — not its training data. This eliminates hallucination on covered topics and allows the knowledge base to be updated without retraining the model.",
         useCases: [
@@ -132,14 +132,14 @@ const TIERS = [
         id: "agentic",
         label: "Tier IV",
         name: "Agentic AI System",
-        subtitle: "Autonomous multi-step reasoning with tool use, memory, and system integrations",
+        subtitle: "Autonomous multi-step reasoning with tool use and system integrations",
         complexity: "Enterprise",
         timeline: "12 – 20 weeks",
         devUSD: [7000, 20000],
         runUSD: [300, 1500],
-        model: "Claude Opus 4.6",
-        modelNote: "Claude Opus 4.6 at $15.00/M input · $75.00/M output. Infrastructure and integration costs are additional.",
-        stack: ["Claude Opus 4.6", "Multi-agent orchestration layer", "Long-term memory store", "CRM / ERP / API integrations"],
+        model: "Claude 3.5 Sonnet",
+        modelNote: "Claude 3.5 Sonnet at $3.00/M input · $15.00/M output. Infrastructure and integration costs are additional.",
+        stack: ["Claude 3.5 Sonnet", "Multi-agent orchestration layer", "Long-term memory store", "CRM / ERP / API integrations"],
         description:
             "An <span class='tt' data-def='AI that can plan, reason, and execute tasks autonomously.'>agentic</span> system does not merely respond — it plans and executes. The AI decomposes a user goal into sub-tasks, selects and calls tools (APIs, databases, calendars, CRM systems), evaluates intermediate results, and iterates until the objective is met. It maintains memory across sessions and can initiate follow-up actions autonomously. This architecture is required when the chatbot must operate as a digital team member — not just an information service.",
         useCases: [
@@ -1122,6 +1122,7 @@ export default function App() {
           background: var(--bg); border: 1px solid var(--border);
           max-width: 600px; width: 100%; max-height: 90vh;
           overflow-y: auto; padding: 32px; position: relative;
+          color: var(--text);
         }
         .modal-close {
           position: absolute; top: 20px; right: 20px;
