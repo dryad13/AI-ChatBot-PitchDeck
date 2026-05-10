@@ -1065,16 +1065,16 @@ export default function App() {
                 {/* HEADER */}
                 <div style={{ borderBottom: "1px solid var(--border)" }}>
                     <div style={{ maxWidth: 960, margin: "0 auto", padding: "26px 26px 0" }}>
-                        <div className="header-content" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 16, paddingBottom: 22 }}>
-                            <div>
-                                <div style={{ marginBottom: 16 }}>
-                                    <img src="/logo.svg" alt="Insurgo Systems" style={{ height: 32, width: "auto", display: "block" }} />
+                        <div className="header-content" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 32, paddingBottom: 22 }}>
+                            <div style={{ flex: "1 1 auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+                                <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
+                                    <img src="/logo.svg" alt="Insurgo Systems" style={{ height: 40, width: "auto", display: "block" }} />
+                                    <h1 className="serif" style={{ fontSize: "clamp(19px,3.2vw,28px)", fontWeight: 700, lineHeight: 1.1, color: "var(--text)", textAlign: "left" }}>
+                                        AI Chatbot Architecture<br />
+                                        <span style={{ color: "var(--accent)" }}>Proposal &amp; Pricing Guide</span>
+                                    </h1>
                                 </div>
-                                <h1 className="serif" style={{ fontSize: "clamp(19px,3.2vw,28px)", fontWeight: 700, lineHeight: 1.25, color: "var(--text)" }}>
-                                    AI Chatbot Architecture<br />
-                                    <span style={{ color: "var(--accent)" }}>Proposal &amp; Pricing Guide</span>
-                                </h1>
-                                <p style={{ marginTop: 9, fontSize: 13, color: "var(--sub)", lineHeight: 1.75, maxWidth: 500 }}>
+                                <p style={{ fontSize: 13, color: "var(--sub)", lineHeight: 1.75, maxWidth: 600 }}>
                                     Four production architectures with system requirements, pricing, and a needs assessment to identify the right fit. Prices current May 2026.
                                 </p>
                             </div>
