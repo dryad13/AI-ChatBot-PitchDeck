@@ -1160,17 +1160,16 @@ export default function App() {
                         {/* HEADER */}
                 <div style={{ position: "sticky", top: 0, zIndex: 90, background: "rgba(10, 10, 15, 0.8)", backdropFilter: "blur(12px)", borderBottom: "1px solid var(--border)" }}>
                     <div style={{ maxWidth: 960, margin: "0 auto", padding: "26px 26px 0" }}>
-                        <div className="header-content" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 20, paddingBottom: 22 }}>
+                        <div className="header-content" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 12, paddingBottom: 16 }}>
                             <div style={{ flex: "1 1 auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
-                                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: 12 }}>
-                                    <img src="/logo.svg" alt="Insurgo Systems" style={{ height: 40, width: "auto", display: "block" }} />
-                                    <h1 className="serif" style={{ fontSize: "clamp(19px,3.2vw,28px)", fontWeight: 700, lineHeight: 1.1, color: "var(--text)", textAlign: "left" }}>
-                                        AI Chatbot Architecture<br />
-                                        <span style={{ color: "var(--accent)" }}>Proposal &amp; Pricing Guide</span>
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14, marginBottom: 8 }}>
+                                    <img src="/logo.svg" alt="Insurgo Systems" style={{ height: 32, width: "auto", display: "block" }} />
+                                    <h1 className="serif" style={{ fontSize: "clamp(16px,2.8vw,22px)", fontWeight: 700, lineHeight: 1, color: "var(--text)", textAlign: "left" }}>
+                                        AI Chatbot Architecture <span style={{ color: "var(--accent)" }}>Proposal</span>
                                     </h1>
                                 </div>
-                                <p style={{ fontSize: 13, color: "var(--sub)", lineHeight: 1.75, maxWidth: 600, margin: "0 auto" }}>
-                                    Four production architectures with system requirements, pricing, and a needs assessment to identify the right fit. Prices current May 2026.
+                                <p style={{ fontSize: 12, color: "var(--sub)", lineHeight: 1.6, maxWidth: 650, margin: "0 auto" }}>
+                                    System requirements, production tiers, and pricing. Updated May 2026.
                                 </p>
                             </div>
                         </div>
