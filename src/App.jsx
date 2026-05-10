@@ -1098,8 +1098,17 @@ export default function App() {
         }
         .radio.on { border-color: var(--accent); background: var(--accent); }
         .radio-dot { width: 5px; height: 5px; border-radius: 50%; background: #fff; }
-        .tier-block { border: 1px solid var(--border); background: var(--s1); margin-bottom: 5px; transition: border-color 0.2s; }
-        .tier-block.open { border-color: var(--aborder); }
+        .tier-card {
+          background: var(--s1); border: 1px solid var(--border);
+          display: flex; flexDirection: column;
+          transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+          height: 100%;
+        }
+        .tier-card:hover { border-color: var(--aborder); transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+        .tier-card.selected { border-color: var(--accent); background: rgba(251,12,12,0.03); }
+        .tiers-grid {
+          display: grid; gridTemplateColumns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;
+        }
         .tier-hd { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer; gap: 12px; }
         .bar-track { height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; }
         .bar-fill  { height: 100%; background: var(--accent); border-radius: 1px; transition: width 0.5s ease; }
@@ -1408,56 +1417,52 @@ export default function App() {
                     {/* ── ARCHITECTURE GUIDE ── */}
                     {tab === "guide" && (
                         <div className="fade">
-                            <div className="sl">All Architecture Tiers</div>
-
-                            {TIERS.map(t => {
-                                const isOpen = expanded === t.id;
-                                return (
-                                    <div key={t.id} className={`tier-block ${isOpen ? "open" : ""}`}>
-                                        <div className="tier-hd" onClick={() => setExpanded(isOpen ? null : t.id)}>
-                                            <div style={{ display: "flex", alignItems: "baseline", gap: 14, flex: 1, minWidth: 0, flexWrap: "wrap" }}>
-                                                <span className="mono" style={{ fontSize: 9, color: "var(--accent)", letterSpacing: "0.12em", textTransform: "uppercase", flexShrink: 0 }}>{t.label}</span>
-                                                <span className="serif" style={{ fontSize: 15.5, fontWeight: 700 }}>{t.name}</span>
-                                                <span style={{ fontSize: 12, color: "var(--sub)", fontWeight: 300, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{t.subtitle}</span>
-                                            </div>
-                                            <span className="mono" style={{ fontSize: 18, color: isOpen ? "var(--accent)" : "var(--dim)", transition: "color 0.2s", flexShrink: 0 }}>
-                                                {isOpen ? "−" : "+"}
-                                            </span>
-                                        </div>
-
-                                        {/* Summary bar */}
-                                        <div className="summary-bar" style={{ padding: "0 20px 14px", display: "flex", gap: 28, flexWrap: "wrap", borderTop: "1px solid var(--border)" }}>
-                                            {[
-                                                { l: "Timeline", v: t.timeline },
-                                                { l: `Dev (${currency})`, v: `${fmt(t.devUSD[0], currency)} – ${fmt(t.devUSD[1], currency)}` },
-                                                { l: `API/mo (${currency})`, v: t.runUSD[0] === 0 ? `Free – ${fmt(t.runUSD[1], currency)}` : `${fmt(t.runUSD[0], currency)} – ${fmt(t.runUSD[1], currency)}` },
-                                                { l: "Complexity", v: t.complexity },
-                                            ].map(item => (
-                                                <div key={item.l} style={{ paddingTop: 12 }}>
-                                                    <div className="mono" style={{ fontSize: 8, color: "var(--dim)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 3 }}>{item.l}</div>
-                                                    <div style={{ fontSize: 12.5, color: "#ccc", fontWeight: 500 }}>{item.v}</div>
-                                                </div>
-                                            ))}
-                                        </div>
-
-                                        {/* Expanded */}
-                                        {isOpen && (
-                                            <div key={t.id + "_d"} className="fade" style={{ borderTop: "1px solid var(--border)", padding: "22px 20px 26px" }}>
-                                                <p className="serif" style={{ fontSize: 14.5, lineHeight: 1.85, color: "var(--sub)", fontStyle: "italic", maxWidth: 700, marginBottom: 28 }}>
-                                                    {t.description}
+                            <div className="sl" style={{ marginBottom: 24 }}>System Architecture Catalog</div>
+                            <div className="tiers-grid">
+                                {TIERS.map(t => {
+                                    const isTarget = result?.tier?.id === t.id;
+                                    return (
+                                        <div key={t.id} className={`tier-card ${isTarget ? "selected" : ""}`} style={{ padding: 24 }}>
+                                            <div className="mono" style={{ fontSize: 9, color: "var(--accent)", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 12 }}>{t.label}</div>
+                                            <h3 className="serif" style={{ fontSize: 18, fontWeight: 700, marginBottom: 4, lineHeight: 1.2 }}>{t.name}</h3>
+                                            <div style={{ fontSize: 11, color: "var(--dim)", marginBottom: 20 }}>{t.subtitle}</div>
+                                            
+                                            <div style={{ flex: 1 }}>
+                                                <p style={{ fontSize: 13, color: "var(--sub)", lineHeight: 1.6, marginBottom: 24 }}>
+                                                    {t.description.split('.')[0]}.
                                                 </p>
+                                                
+                                                <div style={{ display: "grid", gap: 14, marginBottom: 24 }}>
+                                                    {[
+                                                        { l: "Timeline", v: t.timeline },
+                                                        { l: "Complexity", v: t.complexity },
+                                                        { l: "Dev Cost", v: `${fmt(t.devUSD[0], currency)}+` },
+                                                    ].map(item => (
+                                                        <div key={item.l}>
+                                                            <div className="mono" style={{ fontSize: 8, color: "var(--dim)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }}>{item.l}</div>
+                                                            <div style={{ fontSize: 12, color: "var(--text)", fontWeight: 500 }}>{item.v}</div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
 
-                                                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: 28 }}>
+                                            <div style={{ borderTop: "1px solid var(--border)", paddingTop: 16 }}>
+                                                <div className="mono" style={{ fontSize: 8, color: "var(--accent)", textTransform: "uppercase", marginBottom: 6 }}>Tech Stack</div>
+                                                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                                                    {t.stack.map(s => (
+                                                        <span key={s} style={{ fontSize: 9, color: "var(--dim)", background: "var(--s2)", padding: "2px 6px", border: "1px solid var(--border)" }}>{s}</span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
 
-                                                    {/* System Requirements */}
-                                                    <div>
-                                                        <div className="sl">System Requirements from Client</div>
-                                                        {t.requirements.map((r, i) => (
-                                                            <div key={i} style={{
-                                                                display: "flex", gap: 10, alignItems: "flex-start",
-                                                                padding: "9px 0", borderBottom: "1px solid var(--border)",
-                                                                fontSize: 13, color: "#999", lineHeight: 1.6,
-                                                            }}>
+                            <div style={{ marginTop: 48 }}>
+                                <div className="sl">Detailed Feature Comparison</div>
+                                <div style={{ overflowX: "auto", margin: "0 -26px", padding: "0 26px" }}>
+                                    <table className="comparison-matrix" style={{ width: "100%", borderCollapse: "collapse", fontSize: 12.5, minWidth: 580, fontFamily: "var(--font)" }}>
                                                                 <span style={{ width: 4, height: 4, borderRadius: "50%", background: "var(--accent)", flexShrink: 0, marginTop: 7 }} />
                                                                 {r}
                                                             </div>
