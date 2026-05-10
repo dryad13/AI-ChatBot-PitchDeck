@@ -1119,24 +1119,34 @@ export default function App() {
         .tier-card {
           background: var(--s1); border: 1px solid var(--border);
           display: flex; flex-direction: column;
-          transition: all 0.2s;
-          padding: 16px;
-          min-height: 200px;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          padding: 20px;
+          min-height: 240px;
           cursor: pointer;
+          position: relative;
         }
-        .tier-card:hover { border-color: var(--accent); background: rgba(251,12,12,0.02); }
-        .tier-card.selected { border-color: var(--accent); background: rgba(251,12,12,0.05); }
+        .tier-card:hover { border-color: var(--accent); background: rgba(251,12,12,0.03); transform: translateY(-2px); }
+        .tier-card.selected { border-color: var(--accent); background: rgba(251,12,12,0.06); border-width: 1.5px; }
         .tiers-grid {
           display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
         }
         .tier-accordion-hd {
           background: var(--s1); border: 1px solid var(--border);
-          padding: 16px; cursor: pointer;
+          padding: 18px 20px; cursor: pointer;
           display: flex; align-items: center; justify-content: space-between;
-          transition: all 0.2s;
+          transition: all 0.25s ease;
+          border-radius: 4px;
         }
-        .tier-accordion-hd:hover { border-color: var(--accent); }
-        .tier-accordion-hd.active { border-bottom: none; border-color: var(--accent); background: var(--adim); }
+        .tier-accordion-hd:hover { border-color: var(--accent); background: var(--s2); }
+        .tier-accordion-hd.active { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-color: var(--accent); background: var(--adim); }
+        .expand-btn {
+          font-family: var(--mono); font-size: 8px; color: var(--accent);
+          text-transform: uppercase; letter-spacing: 0.1em;
+          display: flex; align-items: center; gap: 8px;
+          padding: 4px 10px; border: 1px solid var(--border);
+          border-radius: 12px; transition: all 0.2s;
+        }
+        .active .expand-btn { background: var(--accent); color: #fff; border-color: var(--accent); }
         .modal-overlay {
           position: fixed; top: 0; left: 0; right: 0; bottom: 0;
           background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
@@ -1493,7 +1503,6 @@ export default function App() {
                                     
                                     return (
                                         <div key={t.id}>
-                                            {/* Mobile Accordion Header */}
                                             <div 
                                                 className={`tier-accordion-hd mobile-only ${isExpanded ? "active" : ""}`}
                                                 onClick={() => setExpanded(isExpanded ? null : t.id)}
@@ -1502,13 +1511,16 @@ export default function App() {
                                                     <span className="mono" style={{ fontSize: 9, color: "var(--accent)" }}>{t.label}</span>
                                                     <span className="serif" style={{ fontSize: 14, fontWeight: 700 }}>{t.name}</span>
                                                 </div>
-                                                <span style={{ fontSize: 12, transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>▼</span>
+                                                <div className="expand-btn">
+                                                    {isExpanded ? "Close" : "Details"}
+                                                    <span style={{ fontSize: 10, transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>▼</span>
+                                                </div>
                                             </div>
 
                                             <div 
                                                 className={`tier-card ${isTarget ? "selected" : ""} ${!isExpanded ? "desktop-only" : "fade"}`} 
                                                 onClick={() => setTierDetail(t)}
-                                                style={isExpanded && window.innerWidth <= 640 ? { borderTop: "none" } : {}}
+                                                style={isExpanded && window.innerWidth <= 640 ? { borderTop: "none", borderTopLeftRadius: 0, borderTopRightRadius: 0 } : {}}
                                             >
                                                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
                                                     <div>
@@ -1536,12 +1548,15 @@ export default function App() {
                                                     </div>
                                                 </div>
 
-                                                <div style={{ marginTop: 14, paddingTop: 10, borderTop: "1px solid var(--border)" }}>
+                                                <div style={{ marginTop: 18, paddingTop: 14, borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                                     <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-                                                        {t.stack.slice(0, 3).map(s => (
-                                                            <span key={s} style={{ fontSize: 8, color: "var(--dim)", background: "var(--s2)", padding: "1px 4px", border: "1px solid var(--border)" }}>{s}</span>
+                                                        {t.stack.slice(0, 2).map(s => (
+                                                            <span key={s} style={{ fontSize: 7, color: "var(--dim)", background: "var(--s2)", padding: "1px 4px", border: "1px solid var(--border)" }}>{s}</span>
                                                         ))}
-                                                        {t.stack.length > 3 && <span style={{ fontSize: 8, color: "var(--dim)" }}>+</span>}
+                                                        {t.stack.length > 2 && <span style={{ fontSize: 7, color: "var(--dim)" }}>+</span>}
+                                                    </div>
+                                                    <div className="mono" style={{ fontSize: 8, color: "var(--accent)", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}>
+                                                        DETAILS <span style={{ fontSize: 10 }}>→</span>
                                                     </div>
                                                 </div>
                                             </div>
