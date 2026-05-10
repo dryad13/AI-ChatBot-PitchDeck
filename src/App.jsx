@@ -1075,16 +1075,17 @@ export default function App() {
           .mobile-only { display: inline; }
           .desktop-only { display: none; }
           .glossary-item { grid-template-columns: 1fr !important; gap: 8px !important; }
-          .header-content { flex-direction: column !important; align-items: flex-start !important; }
+          .header-content { flex-direction: column !important; align-items: center !important; text-align: center !important; }
+          .header-content h1 { text-align: center !important; }
           .tier-hd { flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
           .summary-bar { gap: 16px !important; }
           .comparison-matrix th, .comparison-matrix td { padding: 8px 10px !important; font-size: 11px !important; }
           .matrix-label { width: 120px !important; }
           .tabs-container { 
             display: flex !important; 
-            gap: 12px !important; 
+            gap: 16px !important; 
             justify-content: center !important;
-            padding: 0 10px !important;
+            padding: 0 !important;
           }
           .tab-btn { 
             font-size: 10px !important; 
