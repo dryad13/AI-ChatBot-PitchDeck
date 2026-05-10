@@ -1135,8 +1135,8 @@ export default function App() {
           padding: 16px 20px; cursor: pointer;
           display: flex; align-items: center; justify-content: space-between;
           transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-          border-radius: 8px;
-          margin-bottom: 6px;
+          border-radius: 12px;
+          margin-bottom: 8px;
         }
         .tier-accordion-hd:hover { border-color: var(--border2); background: var(--adim); }
         .tier-accordion-hd.active { border-color: var(--accent); background: var(--adim); }
@@ -1200,7 +1200,8 @@ export default function App() {
         .desktop-only { } /* preserved for desktop visibility */
         
         @media (max-width: 640px) {
-          .mobile-only { display: block !important; }
+          .mobile-only { display: block; }
+          .tier-accordion-hd.mobile-only { display: flex !important; }
           .desktop-only { display: none !important; }
           .tiers-grid { grid-template-columns: 1fr !important; }
           .glossary-item { grid-template-columns: 1fr !important; gap: 8px !important; }
