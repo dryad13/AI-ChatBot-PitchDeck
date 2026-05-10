@@ -1200,7 +1200,7 @@ export default function App() {
         .desktop-only { } /* preserved for desktop visibility */
         
         @media (max-width: 640px) {
-          .mobile-only { display: block; }
+          .mobile-only { display: block !important; }
           .tier-accordion-hd.mobile-only { display: flex !important; }
           .desktop-only { display: none !important; }
           .tiers-grid { grid-template-columns: 1fr !important; }
