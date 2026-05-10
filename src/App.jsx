@@ -99,7 +99,7 @@ const TIERS = [
         modelNote: "Claude 3.5 Sonnet at $3.00/M input · $15.00/M output. Pinecone vector DB approx. $70/mo base plan.",
         stack: ["Claude 3.5 Sonnet", "LangChain / LlamaIndex", "Pinecone or Weaviate", "Next.js + Tailwind CSS"],
         description:
-            "A <span class='tt' data-def='Retrieval-Augmented Generation. This grounds the model in your actual documents.'>RAG</span> bot adds a retrieval layer between the user and the language model. When a query arrives, the system searches a <span class='tt' data-def='A database that stores text as mathematical vectors for similarity search.'>vector database</span> of your indexed documents, extracts the most relevant passages, and passes them as context to the model. The model then generates a response grounded in your actual content — not its training data. This eliminates hallucination on covered topics and allows the knowledge base to be updated without retraining the model.",
+            "The Knowledge-Grounded architecture integrates a sophisticated retrieval layer between the user and the AI. Upon receiving a query, the system queries a high-performance vector database of your indexed corporate documents to extract the most contextually relevant passages. These are provided as real-time context to the model, ensuring every response is grounded in your verified data rather than general training knowledge. This approach virtually eliminates hallucinations on business-specific topics and allows for instantaneous knowledge base updates without the need for costly model retraining.",
         useCases: [
             "Legal or compliance Q&A over internal policy documents",
             "Real estate listing search and recommendations",
