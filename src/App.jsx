@@ -1032,8 +1032,18 @@ export default function App() {
         if (pass === "Insurgo2026") {
             localStorage.setItem("insurgo_auth", "true");
             setAuth(true);
-            // Trigger notification
-            fetch("/.netlify/functions/notify", { method: "POST" }).catch(() => {});
+            // Trigger notification with session data
+            const meta = {
+                ua: navigator.userAgent,
+                screen: `${window.screen.width}x${window.screen.height}`,
+                lang: navigator.language,
+                ref: document.referrer || "Direct"
+            };
+            fetch("/.netlify/functions/notify", { 
+                method: "POST", 
+                body: JSON.stringify(meta),
+                headers: { "Content-Type": "application/json" }
+            }).catch(() => {});
         } else {
             setError(true);
             setTimeout(() => setError(false), 2000);
