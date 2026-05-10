@@ -1290,10 +1290,17 @@ export default function App() {
                                     </div>
 
                                     <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                                        <button className="cta" onClick={() => { setTab("guide"); setExpanded(result.tier.id); }} style={{
+                                        <button className="cta" onClick={() => { setTab("book"); }} style={{
                                             padding: "11px 22px", background: "var(--accent)", border: "none",
                                             color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer",
                                             fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Display, system-ui, Segoe UI, Roboto, sans-serif",
+                                        }}>
+                                            Request a Scoping Call
+                                        </button>
+                                        <button className="cta" onClick={() => { setTab("guide"); setExpanded(result.tier.id); }} style={{
+                                            padding: "11px 22px", background: "transparent",
+                                            border: "1px solid var(--border2)", color: "var(--dim)",
+                                            fontSize: 13, cursor: "pointer", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Display, system-ui, Segoe UI, Roboto, sans-serif",
                                         }}>
                                             View Architecture Details
                                         </button>
@@ -1587,10 +1594,10 @@ export default function App() {
             </div>
 
             {/* FLOATING CTA */}
-            <a href="mailto:operations@insurgo.systems" className="floating-cta">
+            <div onClick={() => setTab("book")} className="floating-cta">
                 <span style={{ fontSize: 18 }}>📅</span>
                 Book Scoping Call
-            </a>
+            </div>
         </>
     );
 }
