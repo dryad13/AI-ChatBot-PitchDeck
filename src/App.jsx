@@ -1065,6 +1065,8 @@ export default function App() {
         }
         .tabs-container::-webkit-scrollbar { display: none; }
         .tab-btn { flex-shrink: 0; }
+        .mobile-only { display: none; }
+        .desktop-only { display: inline; }
         
         @media (max-width: 640px) {
           .mobile-only { display: inline; }
