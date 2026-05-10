@@ -1160,7 +1160,7 @@ export default function App() {
                         {/* HEADER */}
                 <div style={{ position: "sticky", top: 0, zIndex: 90, background: "rgba(10, 10, 15, 0.8)", backdropFilter: "blur(12px)", borderBottom: "1px solid var(--border)" }}>
                     <div style={{ maxWidth: 960, margin: "0 auto", padding: "26px 26px 0" }}>
-                        <div className="header-content" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 32, paddingBottom: 22 }}>
+                        <div className="header-content" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 20, paddingBottom: 22 }}>
                             <div style={{ flex: "1 1 auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
                                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: 12 }}>
                                     <img src="/logo.svg" alt="Insurgo Systems" style={{ height: 40, width: "auto", display: "block" }} />
@@ -1172,26 +1172,6 @@ export default function App() {
                                 <p style={{ fontSize: 13, color: "var(--sub)", lineHeight: 1.75, maxWidth: 600, margin: "0 auto" }}>
                                     Four production architectures with system requirements, pricing, and a needs assessment to identify the right fit. Prices current May 2026.
                                 </p>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 24 }}>
-                                <div style={{ textAlign: "right" }}>
-                                    <div className="mono" style={{ fontSize: 9, color: "var(--dim)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.1em" }}>Currency</div>
-                                    <div style={{ display: "flex" }}>
-                                        {["PKR", "USD"].map((c, i) => (
-                                            <button key={c} onClick={() => setCurrency(c)} style={{
-                                                padding: "6px 14px", fontSize: 11, fontWeight: 500,
-                                                fontFamily: "ui-monospace, SF Mono, Fira Code, Roboto Mono, monospace",
-                                                cursor: "pointer",
-                                                border: "1px solid var(--border2)",
-                                                marginLeft: i > 0 ? -1 : 0,
-                                                background: currency === c ? "var(--accent)" : "transparent",
-                                                color: currency === c ? "#fff" : "var(--sub)",
-                                                transition: "all 0.15s",
-                                            }}>{c}</button>
-                                        ))}
-                                    </div>
-                                    <div className="mono" style={{ fontSize: 9, color: "var(--dim)", marginTop: 5 }}>1 USD = 280 PKR</div>
-                                </div>
                             </div>
                         </div>
 
@@ -1523,51 +1503,88 @@ export default function App() {
                     {/* ── API PRICING ── */}
                     {tab === "calc" && (
                         <div className="fade">
-                            <div className="sl">Live API Cost Estimator</div>
-                            <p style={{ fontSize: 13, color: "var(--sub)", lineHeight: 1.75, marginBottom: 30, maxWidth: 600 }}>
-                                Costs calculated at 500 input and 300 output tokens per exchange — a typical system-prompted conversation turn. Actual costs vary with context depth, caching, and model selection. Prices from official provider documentation, May 2026.
-                            </p>
-
-                            <div style={{ marginBottom: 34 }}>
-                                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
-                                    <span className="mono" style={{ fontSize: 9, color: "var(--dim)", textTransform: "uppercase", letterSpacing: "0.1em" }}>Monthly Conversations</span>
-                                    <span className="mono" style={{ fontSize: 15, color: "var(--text)", fontWeight: 500 }}>{msgs.toLocaleString()}</span>
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 32, flexWrap: "wrap", gap: 20 }}>
+                                <div style={{ flex: 1, minWidth: 280 }}>
+                                    <div className="sl">Volume & Infrastructure Estimator</div>
+                                    <h2 className="serif" style={{ fontSize: 21, fontWeight: 700 }}>Monthly Operating Estimates</h2>
                                 </div>
-                                <input type="range" className="range-sl" min={1000} max={500000} step={1000} value={msgs} onChange={e => setMsgs(+e.target.value)} />
-                                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 5 }}>
-                                    <span className="mono" style={{ fontSize: 9, color: "var(--dim)" }}>1,000</span>
-                                    <span className="mono" style={{ fontSize: 9, color: "var(--dim)" }}>500,000</span>
+                                <div style={{ textAlign: "right" }}>
+                                    <div className="mono" style={{ fontSize: 9, color: "var(--dim)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.1em" }}>Currency Select</div>
+                                    <div style={{ display: "flex" }}>
+                                        {["PKR", "USD"].map((c, i) => (
+                                            <button key={c} onClick={() => setCurrency(c)} style={{
+                                                padding: "6px 14px", fontSize: 11, fontWeight: 500,
+                                                fontFamily: "var(--mono)", cursor: "pointer",
+                                                border: "1px solid var(--border2)",
+                                                marginLeft: i > 0 ? -1 : 0,
+                                                background: currency === c ? "var(--accent)" : "transparent",
+                                                color: currency === c ? "#fff" : "var(--sub)",
+                                                transition: "all 0.15s",
+                                            }}>{c}</button>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
 
-                            {MODELS.map((m, i) => {
-                                const costUSD = calcCost(m, msgs);
-                                const maxCost = calcCost(MODELS[3], msgs);
-                                const pct = Math.max(2, Math.round((costUSD / maxCost) * 100));
-                                const display = currency === "PKR"
-                                    ? "PKR " + Math.round(costUSD * PKR).toLocaleString("en-PK")
-                                    : "$" + costUSD.toFixed(2);
-                                return (
-                                    <div key={m.name} style={{ padding: "16px 0", borderBottom: "1px solid var(--border)" }}>
-                                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 9 }}>
-                                            <div>
-                                                <span style={{ fontSize: 13.5, color: "var(--text)", fontWeight: 500 }}>{m.name}</span>
-                                                <span className="pill" style={{ marginLeft: 10 }}>{m.tier}</span>
-                                            </div>
-                                            <span className="serif" style={{ fontSize: 16, fontWeight: 700 }}>
-                                                {display}
-                                                <span style={{ fontSize: 11, color: "var(--sub)", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Display, system-ui, Segoe UI, Roboto, sans-serif", fontWeight: 300, marginLeft: 3 }}>/mo</span>
-                                            </span>
-                                        </div>
-                                        <div className="bar-track">
-                                            <div className="bar-fill" style={{ width: `${pct}%`, opacity: 0.5 + i * 0.17 }} />
-                                        </div>
-                                        <div className="mono" style={{ fontSize: 9, color: "var(--dim)", marginTop: 5 }}>
-                                            ${m.inM} / 1M input · ${m.outM} / 1M output
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                            <div style={{ background: "var(--s1)", border: "1px solid var(--border)", padding: 26, marginBottom: 32 }}>
+                                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
+                                    <span className="mono" style={{ fontSize: 10, color: "var(--sub)", textTransform: "uppercase" }}>Monthly Conversations</span>
+                                    <span className="serif" style={{ fontWeight: 700, fontSize: 18 }}>{msgs.toLocaleString()}</span>
+                                </div>
+                                <input
+                                    type="range" min="1000" max="100000" step="1000"
+                                    value={msgs} onChange={(e) => setMsgs(parseInt(e.target.value))}
+                                    className="range-sl"
+                                />
+                                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 10 }}>
+                                    <span className="mono" style={{ fontSize: 9, color: "var(--faint)" }}>1k</span>
+                                    <span className="mono" style={{ fontSize: 9, color: "var(--faint)" }}>100k</span>
+                                </div>
+                            </div>
+
+                            <div style={{ overflowX: "auto", margin: "0 -26px", padding: "0 26px" }}>
+                                <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", minWidth: 600 }}>
+                                    <thead>
+                                        <tr style={{ borderBottom: "1px solid var(--border2)" }}>
+                                            <th className="mono" style={{ padding: "12px 16px", fontSize: 10, color: "var(--dim)" }}>ARCHITECTURE</th>
+                                            <th className="mono" style={{ padding: "12px 16px", fontSize: 10, color: "var(--dim)" }}>API COST</th>
+                                            <th className="mono" style={{ padding: "12px 16px", fontSize: 10, color: "var(--dim)" }}>INFRA / HOSTING</th>
+                                            <th className="mono" style={{ padding: "12px 16px", fontSize: 10, color: "var(--dim)" }}>TOTAL ESTIMATE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {TIERS.map((m) => {
+                                            const apiUsd = (msgs * (500 * m.inM + 300 * m.outM)) / 1000000;
+                                            const infraUsd = m.id === "rule" ? 15 : (m.id === "llm" ? 25 : (m.id === "rag" ? 85 : 150));
+                                            const totalUsd = apiUsd + infraUsd;
+
+                                            const displayApi = currency === "PKR" ? `PKR ${(apiUsd * 280).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : `$${apiUsd.toFixed(2)}`;
+                                            const displayInfra = currency === "PKR" ? `PKR ${(infraUsd * 280).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : `$${infraUsd.toFixed(0)}`;
+                                            const displayTotal = currency === "PKR" ? `PKR ${(totalUsd * 280).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : `$${totalUsd.toFixed(0)}`;
+
+                                            return (
+                                                <tr key={m.id} style={{ borderBottom: "1px solid var(--border)" }}>
+                                                    <td style={{ padding: "16px", verticalAlign: "top" }}>
+                                                        <div className="serif" style={{ fontWeight: 700, fontSize: 14 }}>{m.name}</div>
+                                                        <div className="mono" style={{ fontSize: 9, color: "var(--accent)", marginTop: 4, textTransform: "uppercase" }}>{m.label}</div>
+                                                    </td>
+                                                    <td className="serif" style={{ padding: "16px", fontWeight: 500, fontSize: 14 }}>{displayApi}</td>
+                                                    <td className="serif" style={{ padding: "16px", fontWeight: 500, fontSize: 14 }}>
+                                                        {displayInfra}
+                                                        <div style={{ fontSize: 9, color: "var(--faint)", marginTop: 4, textTransform: "uppercase" }}>
+                                                            {m.id === "rag" || m.id === "agent" ? "Server + Vector DB" : "Cloud Instance"}
+                                                        </div>
+                                                    </td>
+                                                    <td style={{ padding: "16px" }}>
+                                                        <div className="serif" style={{ fontWeight: 700, fontSize: 15, color: "var(--accent)" }}>{displayTotal}</div>
+                                                        <div className="mono" style={{ fontSize: 9, color: "var(--faint)", marginTop: 4 }}>per month</div>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
 
                             <div style={{ marginTop: 26, padding: "15px 17px", border: "1px solid var(--border)", background: "var(--s1)" }}>
                                 <div className="sl" style={{ marginBottom: 8 }}>Cost Optimisation Note</div>
