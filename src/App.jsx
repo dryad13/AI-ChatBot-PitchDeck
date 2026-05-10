@@ -1001,6 +1001,7 @@ export default function App() {
     const [auth, setAuth] = useState(localStorage.getItem("insurgo_auth") === "true");
     const [pass, setPass] = useState("");
     const [error, setError] = useState(false);
+    const [tierDetail, setTierDetail] = useState(null);
 
     useEffect(() => {
         (async function () {
@@ -1104,11 +1105,28 @@ export default function App() {
           transition: all 0.2s;
           padding: 16px;
           min-height: 200px;
+          cursor: pointer;
         }
         .tier-card:hover { border-color: var(--accent); background: rgba(251,12,12,0.02); }
         .tier-card.selected { border-color: var(--accent); background: rgba(251,12,12,0.05); }
         .tiers-grid {
           display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+        }
+        .modal-overlay {
+          position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+          background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+          z-index: 1000; display: flex; align-items: center; justify-content: center;
+          padding: 20px;
+        }
+        .modal-content {
+          background: var(--bg); border: 1px solid var(--border);
+          max-width: 600px; width: 100%; max-height: 90vh;
+          overflow-y: auto; padding: 32px; position: relative;
+        }
+        .modal-close {
+          position: absolute; top: 20px; right: 20px;
+          background: transparent; border: none; color: var(--dim);
+          font-size: 20px; cursor: pointer;
         }
         .tier-hd { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer; gap: 12px; }
         .bar-track { height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; }
@@ -1423,7 +1441,7 @@ export default function App() {
                                 {TIERS.map(t => {
                                     const isTarget = result?.tier?.id === t.id;
                                     return (
-                                        <div key={t.id} className={`tier-card ${isTarget ? "selected" : ""}`}>
+                                        <div key={t.id} className={`tier-card ${isTarget ? "selected" : ""}`} onClick={() => setTierDetail(t)}>
                                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
                                                 <div>
                                                     <div className="mono" style={{ fontSize: 8, color: "var(--accent)", letterSpacing: "0.1em" }}>{t.label}</div>
@@ -1688,6 +1706,76 @@ export default function App() {
             </>
             )}
         </div>
+
+            {/* TIER DETAIL MODAL */}
+            {tierDetail && (
+                <div className="modal-overlay" onClick={() => setTierDetail(null)}>
+                    <div className="modal-content fade" onClick={e => e.stopPropagation()}>
+                        <button className="modal-close" onClick={() => setTierDetail(null)}>&times;</button>
+                        
+                        <div className="mono" style={{ fontSize: 9, color: "var(--accent)", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>{tierDetail.label} Specifications</div>
+                        <h2 className="serif" style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>{tierDetail.name}</h2>
+                        <p style={{ fontSize: 13, color: "var(--sub)", lineHeight: 1.6, marginBottom: 32 }}>{tierDetail.subtitle}</p>
+
+                        <div style={{ marginBottom: 32 }}>
+                            <div className="sl">Overview</div>
+                            <div style={{ fontSize: 14, color: "var(--text)", lineHeight: 1.7 }}>{tierDetail.description}</div>
+                        </div>
+
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 32 }}>
+                            <div>
+                                <div className="sl">Primary Use Cases</div>
+                                {tierDetail.useCases.map((u, i) => (
+                                    <div key={i} style={{ fontSize: 13, color: "var(--sub)", padding: "8px 0", borderBottom: "1px solid var(--border)", display: "flex", gap: 8 }}>
+                                        <span style={{ color: "var(--accent)" }}>•</span> {u}
+                                    </div>
+                                ))}
+                            </div>
+                            <div>
+                                <div className="sl">Core Tech Stack</div>
+                                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                                    {tierDetail.stack.map(s => (
+                                        <span key={s} className="pill">{s}</span>
+                                    ))}
+                                </div>
+                                <div style={{ marginTop: 24, padding: 16, background: "var(--s2)", border: "1px solid var(--border)" }}>
+                                    <div className="mono" style={{ fontSize: 8, color: "var(--dim)", textTransform: "uppercase", marginBottom: 4 }}>Recommended Model</div>
+                                    <div style={{ fontSize: 14, fontWeight: 600 }}>{tierDetail.model}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+                            <div>
+                                <div className="sl">Advantages</div>
+                                {tierDetail.pros.map((p, i) => (
+                                    <div key={i} style={{ fontSize: 12, color: "var(--sub)", marginBottom: 8, display: "flex", gap: 8 }}>
+                                        <span style={{ color: "var(--accent)" }}>+</span> {p}
+                                    </div>
+                                ))}
+                            </div>
+                            <div>
+                                <div className="sl">Limitations</div>
+                                {tierDetail.cons.map((c, i) => (
+                                    <div key={i} style={{ fontSize: 12, color: "var(--sub)", marginBottom: 8, display: "flex", gap: 8 }}>
+                                        <span style={{ color: "var(--dim)" }}>–</span> {c}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div style={{ marginTop: 40, paddingTop: 24, borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <div>
+                                <div className="mono" style={{ fontSize: 8, color: "var(--dim)", textTransform: "uppercase" }}>Development Timeline</div>
+                                <div style={{ fontSize: 16, fontWeight: 600 }}>{tierDetail.timeline}</div>
+                            </div>
+                            <button className="cta" onClick={() => { setTab("book"); setTierDetail(null); }} style={{ padding: "10px 20px", background: "var(--accent)", color: "#fff", border: "none", borderRadius: 4, fontWeight: 600, fontSize: 13 }}>
+                                Discuss This Tier
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* FLOATING CTA */}
             <div onClick={() => setTab("book")} className="floating-cta">
