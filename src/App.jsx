@@ -1908,13 +1908,6 @@ export default function App() {
                 </div>
             )}
 
-            {/* FLOATING CTA */}
-            {tab !== "book" && (
-                <div onClick={() => setTab("book")} className="floating-cta">
-                    <span style={{ fontSize: 18 }}>📅</span>
-                    Book Scoping Call
-                </div>
-            )}
         </>
     );
 }
