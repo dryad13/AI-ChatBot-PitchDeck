@@ -1010,6 +1010,7 @@ export default function App() {
     const [step, setStep] = useState(0);
     const [answers, setAnswers] = useState({});
     const [picked, setPicked] = useState(null);
+    const [quizStarted, setQuizStarted] = useState(false);
     const [result, setResult] = useState(null);
     const [expanded, setExpanded] = useState(null);
     const [msgs, setMsgs] = useState(15000);
@@ -1065,7 +1066,7 @@ export default function App() {
     }
 
     function restart() {
-        setStep(0); setAnswers({}); setPicked(null); setResult(null);
+        setStep(0); setAnswers({}); setPicked(null); setResult(null); setQuizStarted(false);
     }
 
     return (
@@ -1355,7 +1356,28 @@ export default function App() {
                     {/* ── NEEDS ASSESSMENT ── */}
                     {tab === "quiz" && (
                         <div className="fade">
-                            {step < QUESTIONS.length && (
+                            {!quizStarted && (
+                                <div style={{ textAlign: "center", padding: "40px 0" }}>
+                                    <div className="mono" style={{ fontSize: 9, color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 12 }}>Architecture Discovery</div>
+                                    <h2 className="serif" style={{ fontSize: "clamp(20px, 4vw, 28px)", fontWeight: 700, marginBottom: 16 }}>Find Your Ideal Build</h2>
+                                    <p style={{ fontSize: 14, color: "var(--sub)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto 32px" }}>
+                                        Answer a few key questions about your data, security needs, and expected scale to receive a tailored architectural recommendation.
+                                    </p>
+                                    <button 
+                                        className="cta" 
+                                        onClick={() => setQuizStarted(true)}
+                                        style={{ 
+                                            padding: "16px 40px", background: "var(--accent)", color: "#fff", 
+                                            border: "none", borderRadius: 10, fontWeight: 600, fontSize: 14,
+                                            margin: "0 auto"
+                                        }}
+                                    >
+                                        Start Discovery Assessment
+                                    </button>
+                                </div>
+                            )}
+
+                            {quizStarted && step < QUESTIONS.length && (
                                 <>
                                     <div style={{ marginBottom: 30 }}>
                                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
