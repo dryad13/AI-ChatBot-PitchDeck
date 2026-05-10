@@ -1462,63 +1462,6 @@ export default function App() {
                             <div style={{ marginTop: 48 }}>
                                 <div className="sl">Detailed Feature Comparison</div>
                                 <div style={{ overflowX: "auto", margin: "0 -26px", padding: "0 26px" }}>
-                                    <table className="comparison-matrix" style={{ width: "100%", borderCollapse: "collapse", fontSize: 12.5, minWidth: 580, fontFamily: "var(--font)" }}>
-                                                                <span style={{ width: 4, height: 4, borderRadius: "50%", background: "var(--accent)", flexShrink: 0, marginTop: 7 }} />
-                                                                {r}
-                                                            </div>
-                                                        ))}
-                                                    </div>
-
-                                                    {/* Use Cases */}
-                                                    <div>
-                                                        <div className="sl">Primary Use Cases</div>
-                                                        {t.useCases.map((u, i) => (
-                                                            <div key={i} style={{ fontSize: 13, color: "#999", padding: "9px 0", borderBottom: "1px solid var(--border)", lineHeight: 1.55 }}>{u}</div>
-                                                        ))}
-
-                                                        <div style={{ marginTop: 22 }}>
-                                                            <div className="sl">Tech Stack</div>
-                                                            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 18 }}>
-                                                                {t.stack.map((s, i) => <span key={i} className="pill">{s}</span>)}
-                                                            </div>
-                                                            <div style={{ padding: "13px 14px", border: "1px solid var(--border)", background: "var(--s2)" }}>
-                                                                <div className="mono" style={{ fontSize: 8, color: "var(--dim)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 5 }}>Recommended Model</div>
-                                                                <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--text)", marginBottom: 3 }}>{t.model}</div>
-                                                                <div style={{ fontSize: 12, color: "var(--sub)", lineHeight: 1.65 }}>{t.modelNote}</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Pros & Cons */}
-                                                    <div>
-                                                        <div className="sl">Advantages</div>
-                                                        {t.pros.map((p, i) => (
-                                                            <div key={i} style={{ display: "flex", gap: 10, padding: "9px 0", borderBottom: "1px solid var(--border)", alignItems: "flex-start" }}>
-                                                                <span style={{ color: "var(--accent)", fontSize: 11, marginTop: 2, flexShrink: 0 }}>+</span>
-                                                                <span style={{ fontSize: 13, color: "#999", lineHeight: 1.55 }}>{p}</span>
-                                                            </div>
-                                                        ))}
-                                                        <div style={{ marginTop: 18 }}>
-                                                            <div className="sl">Limitations</div>
-                                                            {t.cons.map((c, i) => (
-                                                                <div key={i} style={{ display: "flex", gap: 10, padding: "9px 0", borderBottom: "1px solid var(--border)", alignItems: "flex-start" }}>
-                                                                    <span style={{ color: "var(--dim)", fontSize: 11, marginTop: 2, flexShrink: 0 }}>–</span>
-                                                                    <span style={{ fontSize: 13, color: "var(--sub)", lineHeight: 1.55 }}>{c}</span>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                );
-                            })}
-
-                            {/* Comparison table */}
-                            <div style={{ marginTop: 36 }}>
-                                <div className="sl">Comparison Matrix</div>
-                                <div style={{ overflowX: "auto", margin: "0 -26px", padding: "0 26px" }}>
                                     <table className="comparison-matrix" style={{ width: "100%", borderCollapse: "collapse", fontSize: 12.5, minWidth: 580, fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Display, system-ui, Segoe UI, Roboto, sans-serif" }}>
                                         <thead>
                                             <tr style={{ borderBottom: "1px solid var(--border)" }}>
