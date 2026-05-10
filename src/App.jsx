@@ -1064,6 +1064,7 @@ export default function App() {
           display: flex; gap: 26px; border-top: 1px solid var(--border);
           overflow-x: auto; -webkit-overflow-scrolling: touch;
           scrollbar-width: none; -ms-overflow-style: none;
+          justify-content: center;
         }
         .tabs-container::-webkit-scrollbar { display: none; }
         .tab-btn { flex-shrink: 0; }
@@ -1082,7 +1083,7 @@ export default function App() {
           .tabs-container { 
             display: flex !important; 
             gap: 12px !important; 
-            justify-content: flex-start !important;
+            justify-content: center !important;
             padding: 0 10px !important;
           }
           .tab-btn { 
