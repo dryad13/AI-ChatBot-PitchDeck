@@ -1517,10 +1517,10 @@ export default function App() {
                                                 onClick={() => setExpanded(isExpanded ? null : t.id)}
                                             >
                                                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                                                    <span className="mono tier-label" style={{ fontSize: 9, color: "var(--dim)" }}>{t.label}</span>
-                                                    <span className="serif tier-name" style={{ fontSize: 14, fontWeight: 700, color: "var(--text)", transition: "all 0.2s" }}>{t.name}</span>
+                                                    <span className="mono tier-label" style={{ fontSize: 9, color: "var(--dim)", whiteSpace: "nowrap" }}>{t.label}</span>
+                                                    <span className="serif tier-name" style={{ fontSize: 14, fontWeight: 700, color: "var(--text)", transition: "all 0.2s", whiteSpace: "nowrap" }}>{t.name}</span>
                                                 </div>
-                                                <div className="expand-btn">
+                                                <div className="expand-btn" style={{ flexShrink: 0 }}>
                                                     <span style={{ fontSize: 16, fontWeight: 300 }}>+</span>
                                                 </div>
                                             </div>
