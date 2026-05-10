@@ -1090,25 +1090,24 @@ export default function App() {
         }
         .fade { animation: fadeUp 0.3s ease forwards; }
         .tab-btn {
-          font-family: var(--mono);
-          font-size: 10px; font-weight: 500;
-          letter-spacing: 0.12em; text-transform: uppercase;
-          background: transparent; border: none; border-bottom: 2px solid transparent;
-          padding: 12px 0; cursor: pointer; color: var(--sub);
-          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          padding: 12px 0; font-family: var(--mono); font-size: 10px;
+          text-transform: uppercase; letter-spacing: 0.12em; color: var(--sub);
+          background: none; border: none; cursor: pointer; transition: all 0.25s;
+          border-bottom: 2px solid transparent;
         }
         .tab-btn.on { color: var(--accent); border-bottom-color: var(--accent); }
-        .tab-btn:hover:not(.on) { color: var(--text); }
+        .tab-btn:hover:not(.on) { color: var(--text); border-bottom-color: var(--border2); }
         .opt {
           width: 100%; text-align: left; display: flex; align-items: flex-start; gap: 13px;
           background: var(--s1); border: 1px solid var(--border);
           color: var(--text); cursor: pointer;
           font-family: var(--font); font-size: 13.5px; font-weight: 400;
-          padding: 14px 18px; line-height: 1.5;
-          transition: border-color 0.15s, background 0.15s;
+          padding: 16px 20px; line-height: 1.5;
+          border-radius: 10px;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .opt:hover  { border-color: var(--border2); background: var(--s2); }
-        .opt.sel    { border-color: var(--accent); background: var(--adim); }
+        .opt:hover  { border-color: var(--accent); background: var(--s2); transform: translateX(4px); }
+        .opt.sel    { border-color: var(--accent); background: var(--adim); box-shadow: 0 0 0 1px var(--accent); }
         .radio {
           width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--border2);
           display: flex; align-items: center; justify-content: center;
@@ -1122,7 +1121,7 @@ export default function App() {
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           padding: 24px;
           border-radius: 12px;
-          min-height: 250px;
+          min-height: 260px;
           cursor: pointer;
           position: relative;
         }
@@ -1133,20 +1132,22 @@ export default function App() {
         }
         .tier-accordion-hd {
           background: var(--s1); border: 1px solid var(--border);
-          padding: 20px 24px; cursor: pointer;
+          padding: 18px 24px; cursor: pointer;
           display: flex; align-items: center; justify-content: space-between;
           transition: all 0.25s ease;
-          border-radius: 30px;
+          border-radius: 12px;
         }
         .tier-accordion-hd:hover { border-color: var(--accent); background: var(--s2); }
         .tier-accordion-hd.active { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-color: var(--accent); background: var(--adim); }
         .expand-btn {
           font-family: var(--mono); font-size: 8px; color: var(--accent);
-          text-transform: uppercase; letter-spacing: 0.12em;
+          text-transform: uppercase; letter-spacing: 0.14em;
           display: flex; align-items: center; gap: 8px;
-          padding: 6px 14px; border: 1px solid var(--border);
-          border-radius: 99px; transition: all 0.2s;
+          padding: 8px 16px; border: 1px solid var(--border);
+          border-radius: 8px; transition: all 0.2s;
+          background: var(--s2);
         }
+        .expand-btn:hover { border-color: var(--accent); background: var(--adim); }
         .active .expand-btn { background: var(--accent); color: #fff; border-color: var(--accent); }
         .modal-overlay {
           position: fixed; top: 0; left: 0; right: 0; bottom: 0;
@@ -1177,8 +1178,15 @@ export default function App() {
         .range-sl { -webkit-appearance: none; appearance: none; width: 100%; height: 2px; background: var(--border2); border-radius: 1px; outline: none; }
         .range-sl::-webkit-slider-thumb { -webkit-appearance: none; width: 13px; height: 13px; border-radius: 50%; background: var(--accent); cursor: pointer; }
         .range-sl::-moz-range-thumb { width: 13px; height: 13px; border-radius: 50%; background: var(--accent); cursor: pointer; border: none; }
-        .cta { transition: opacity 0.18s; cursor: pointer; }
-        .cta:hover { opacity: 0.82; }
+        .cta { 
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
+          cursor: pointer; 
+          border-radius: 10px;
+          display: flex; align-items: center; justify-content: center;
+          gap: 10px;
+        }
+        .cta:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(251,12,12,0.25); }
+        .cta:active { transform: translateY(0); }
         .sl { font-family: var(--mono); font-size: 9px; color: var(--sub); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
         .tabs-container {
           display: flex; gap: 26px; border-top: 1px solid var(--border);
@@ -1549,16 +1557,18 @@ export default function App() {
                                                     </div>
                                                 </div>
 
-                                                <div style={{ marginTop: 18, paddingTop: 14, borderTop: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                                    <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-                                                        {t.stack.slice(0, 2).map(s => (
-                                                            <span key={s} style={{ fontSize: 7, color: "var(--dim)", background: "var(--s2)", padding: "1px 4px", border: "1px solid var(--border)" }}>{s}</span>
-                                                        ))}
-                                                        {t.stack.length > 2 && <span style={{ fontSize: 7, color: "var(--dim)" }}>+</span>}
-                                                    </div>
-                                                    <div className="mono" style={{ fontSize: 8, color: "var(--accent)", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}>
-                                                        DETAILS <span style={{ fontSize: 10 }}>→</span>
-                                                    </div>
+                                                <div style={{ marginTop: 22 }}>
+                                                    <button 
+                                                        className="cta" 
+                                                        style={{ 
+                                                            width: "100%", padding: "10px 0", 
+                                                            background: "transparent", border: "1px solid var(--border2)",
+                                                            color: "var(--dim)", fontSize: 11, fontWeight: 600,
+                                                            fontFamily: "var(--mono)", letterSpacing: "0.05em"
+                                                        }}
+                                                    >
+                                                        VIEW SPECIFICATIONS
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1854,8 +1864,11 @@ export default function App() {
                                 <div className="mono" style={{ fontSize: 8, color: "var(--dim)", textTransform: "uppercase" }}>Development Timeline</div>
                                 <div style={{ fontSize: 16, fontWeight: 600 }}>{tierDetail.timeline}</div>
                             </div>
-                            <button className="cta" onClick={() => { setTab("book"); setTierDetail(null); }} style={{ padding: "10px 20px", background: "var(--accent)", color: "#fff", border: "none", borderRadius: 4, fontWeight: 600, fontSize: 13 }}>
-                                Discuss This Tier
+                            <button className="cta" onClick={() => { setTab("book"); setTierDetail(null); }} style={{ 
+                                padding: "14px 28px", background: "var(--accent)", color: "#fff", border: "none", 
+                                borderRadius: 10, fontWeight: 600, fontSize: 13, letterSpacing: "0.02em" 
+                            }}>
+                                Request a Scoping Call
                             </button>
                         </div>
                     </div>
