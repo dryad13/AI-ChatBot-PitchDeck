@@ -1160,20 +1160,20 @@ export default function App() {
                         {/* HEADER */}
                 <div style={{ position: "sticky", top: 0, zIndex: 90, background: "rgba(10, 10, 15, 0.8)", backdropFilter: "blur(12px)", borderBottom: "1px solid var(--border)" }}>
                     <div style={{ maxWidth: 960, margin: "0 auto", padding: "26px 26px 0" }}>
-                        <div className="header-content" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 32, paddingBottom: 22 }}>
+                        <div className="header-content" style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 32, paddingBottom: 22 }}>
                             <div style={{ flex: "1 1 auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
-                                <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: 12 }}>
                                     <img src="/logo.svg" alt="Insurgo Systems" style={{ height: 40, width: "auto", display: "block" }} />
                                     <h1 className="serif" style={{ fontSize: "clamp(19px,3.2vw,28px)", fontWeight: 700, lineHeight: 1.1, color: "var(--text)", textAlign: "left" }}>
                                         AI Chatbot Architecture<br />
                                         <span style={{ color: "var(--accent)" }}>Proposal &amp; Pricing Guide</span>
                                     </h1>
                                 </div>
-                                <p style={{ fontSize: 13, color: "var(--sub)", lineHeight: 1.75, maxWidth: 600 }}>
+                                <p style={{ fontSize: 13, color: "var(--sub)", lineHeight: 1.75, maxWidth: 600, margin: "0 auto" }}>
                                     Four production architectures with system requirements, pricing, and a needs assessment to identify the right fit. Prices current May 2026.
                                 </p>
                             </div>
-                            <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 24 }}>
                                 <div style={{ textAlign: "right" }}>
                                     <div className="mono" style={{ fontSize: 9, color: "var(--dim)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.1em" }}>Currency</div>
                                     <div style={{ display: "flex" }}>
@@ -1609,7 +1609,7 @@ export default function App() {
                     )}
 
                     {/* FOOTER CTA */}
-                    <div style={{ marginTop: 54, borderTop: "1px solid var(--border)", paddingTop: 34 }}>
+                    <div style={{ marginTop: 54, borderTop: "1px solid var(--border)", paddingTop: 34, textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
                         <h2 className="serif" style={{ fontSize: "clamp(17px,2.5vw,24px)", fontWeight: 700, marginBottom: 8 }}>
                             Ready to proceed?
                         </h2>
@@ -1617,14 +1617,14 @@ export default function App() {
                             Insurgo Systems Engineering handles architecture, development, deployment, and ongoing maintenance.
                             Complete the needs assessment to identify your tier, then contact us to scope the project formally.
                         </p>
-                        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center" }}>
                             <button 
                                 className="cta" 
-                                onClick={() => window.location.href = 'mailto:operations@insurgo.systems'}
+                                onClick={() => setTab("book")}
                                 style={{
                                     padding: "11px 22px", background: "var(--accent)", border: "none",
                                     color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer",
-                                    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Display, system-ui, Segoe UI, Roboto, sans-serif",
+                                    fontFamily: "var(--font)",
                                 }}
                             >
                                 Request a Scoping Call
@@ -1632,7 +1632,7 @@ export default function App() {
                             <button className="cta" onClick={() => setTab("quiz")} style={{
                                 padding: "11px 22px", background: "transparent",
                                 border: "1px solid var(--border2)", color: "var(--sub)",
-                                fontSize: 13, cursor: "pointer", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Display, system-ui, Segoe UI, Roboto, sans-serif",
+                                fontSize: 13, cursor: "pointer", fontFamily: "var(--font)",
                             }}>
                                 Start Needs Assessment
                             </button>
