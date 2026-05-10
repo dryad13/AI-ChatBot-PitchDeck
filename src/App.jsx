@@ -882,7 +882,7 @@ function GlossaryTab() {
 
                     <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
                         {cat.terms.map((t, ti) => (
-                            <div key={ti} style={{
+                            <div key={ti} className="glossary-item" style={{
                                 display: "grid",
                                 gridTemplateColumns: "200px 1fr",
                                 gap: 0,
@@ -1042,6 +1042,22 @@ export default function App() {
         .cta { transition: opacity 0.18s; cursor: pointer; }
         .cta:hover { opacity: 0.82; }
         .sl { font-family: var(--mono); font-size: 9px; color: var(--sub); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+        .tabs-container {
+          display: flex; gap: 26px; border-top: 1px solid var(--border);
+          overflow-x: auto; -webkit-overflow-scrolling: touch;
+          scrollbar-width: none; -ms-overflow-style: none;
+        }
+        .tabs-container::-webkit-scrollbar { display: none; }
+        .tab-btn { flex-shrink: 0; }
+        
+        @media (max-width: 640px) {
+          .glossary-item { grid-template-columns: 1fr !important; gap: 8px !important; }
+          .header-content { flex-direction: column !important; align-items: flex-start !important; }
+          .tier-hd { flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
+          .summary-bar { gap: 16px !important; }
+          .comparison-matrix th, .comparison-matrix td { padding: 8px 10px !important; font-size: 11px !important; }
+          .matrix-label { width: 120px !important; }
+        }
       `}} />
 
             <div className="sans" style={{ background: "var(--bg)", color: "var(--text)", minHeight: "100vh" }}>
@@ -1049,7 +1065,7 @@ export default function App() {
                 {/* HEADER */}
                 <div style={{ borderBottom: "1px solid var(--border)" }}>
                     <div style={{ maxWidth: 960, margin: "0 auto", padding: "26px 26px 0" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 16, paddingBottom: 22 }}>
+                        <div className="header-content" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 16, paddingBottom: 22 }}>
                             <div>
                                 <div style={{ marginBottom: 16 }}>
                                     <img src="/logo.svg" alt="Insurgo Systems" style={{ height: 32, width: "auto", display: "block" }} />
@@ -1082,7 +1098,7 @@ export default function App() {
                             </div>
                         </div>
 
-                        <div style={{ display: "flex", gap: 26, borderTop: "1px solid var(--border)" }}>
+                        <div className="tabs-container">
                             {[
                                 { id: "quiz", label: "Needs Assessment" },
                                 { id: "guide", label: "Architecture Guide" },
@@ -1253,7 +1269,7 @@ export default function App() {
                                         </div>
 
                                         {/* Summary bar */}
-                                        <div style={{ padding: "0 20px 14px", display: "flex", gap: 28, flexWrap: "wrap", borderTop: "1px solid var(--border)" }}>
+                                        <div className="summary-bar" style={{ padding: "0 20px 14px", display: "flex", gap: 28, flexWrap: "wrap", borderTop: "1px solid var(--border)" }}>
                                             {[
                                                 { l: "Timeline", v: t.timeline },
                                                 { l: `Dev (${currency})`, v: `${fmt(t.devUSD[0], currency)} – ${fmt(t.devUSD[1], currency)}` },
@@ -1340,11 +1356,11 @@ export default function App() {
                             {/* Comparison table */}
                             <div style={{ marginTop: 36 }}>
                                 <div className="sl">Comparison Matrix</div>
-                                <div style={{ overflowX: "auto" }}>
-                                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12.5, minWidth: 580, fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Display, system-ui, Segoe UI, Roboto, sans-serif" }}>
+                                <div style={{ overflowX: "auto", margin: "0 -26px", padding: "0 26px" }}>
+                                    <table className="comparison-matrix" style={{ width: "100%", borderCollapse: "collapse", fontSize: 12.5, minWidth: 580, fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Display, system-ui, Segoe UI, Roboto, sans-serif" }}>
                                         <thead>
                                             <tr style={{ borderBottom: "1px solid var(--border)" }}>
-                                                <th style={{ padding: "10px 14px", textAlign: "left", color: "var(--sub)", fontWeight: 500, fontSize: 11, width: 170 }}>Feature</th>
+                                                <th className="matrix-label" style={{ padding: "10px 14px", textAlign: "left", color: "var(--sub)", fontWeight: 500, fontSize: 11, width: 170 }}>Feature</th>
                                                 {TIERS.map(t => (
                                                     <th key={t.id} style={{ padding: "10px 14px", textAlign: "center", color: "var(--sub)", fontWeight: 500, fontSize: 11 }}>
                                                         <div className="mono" style={{ fontSize: 8, color: "var(--accent)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 2 }}>{t.label}</div>
