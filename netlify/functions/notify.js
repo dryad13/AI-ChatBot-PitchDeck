@@ -6,7 +6,7 @@ exports.handler = async (event) => {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'System <notifications@insurgo.systems>',
+      from: 'System <notifications@verification.insurgo.systems>',
       to: ['operations@insurgo.systems'],
       subject: '🚨 Pitch Deck Accessed',
       html: `
