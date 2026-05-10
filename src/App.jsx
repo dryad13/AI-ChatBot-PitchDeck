@@ -991,20 +991,21 @@ export default function App() {
                 __html: `
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-          --font: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, "Segoe UI", Roboto, sans-serif;
-          --mono: ui-monospace, "SF Mono", "Fira Code", "Roboto Mono", monospace;
-          --bg:      #090909;
-          --s1:      #101010;
-          --s2:      #181818;
-          --border:  #252525;
-          --border2: #333333;
-          --text:    #e6e4df;
-          --sub:     #aaaaaa;
-          --dim:     #777777;
-          --faint:   #555555;
+          --font: "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+          --mono: "JetBrains Mono", "IBM Plex Mono", monospace;
+          --bg:      #0a0a0f;
+          --s1:      #0f1011;
+          --s2:      #191a1b;
+          --border:  rgba(255, 255, 255, 0.08);
+          --border2: rgba(255, 255, 255, 0.12);
+          --text:    #f7f8f8;
+          --sub:     #d0d6e0;
+          --dim:     #8a8f98;
+          --faint:   #4a4d54;
           --accent:  #fb0c0c;
           --adim:    rgba(251,12,12,0.07);
           --aborder: rgba(251,12,12,0.28);
+          --accent-hover: #ff3434;
         }
         body { background: var(--bg); font-family: var(--font); }
         .serif { font-family: var(--font); }
@@ -1021,10 +1022,10 @@ export default function App() {
           letter-spacing: 0.12em; text-transform: uppercase;
           background: transparent; border: none; border-bottom: 2px solid transparent;
           padding: 12px 0; cursor: pointer; color: var(--sub);
-          transition: color 0.2s, border-color 0.2s;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .tab-btn.on { color: var(--text); border-bottom-color: var(--accent); }
-        .tab-btn:hover:not(.on) { color: var(--sub); }
+        .tab-btn.on { color: var(--accent); border-bottom-color: var(--accent); }
+        .tab-btn:hover:not(.on) { color: var(--text); }
         .opt {
           width: 100%; text-align: left; display: flex; align-items: flex-start; gap: 13px;
           background: var(--s1); border: 1px solid var(--border);
@@ -1095,14 +1096,15 @@ export default function App() {
         .floating-cta {
           position: fixed; bottom: 32px; right: 32px;
           background: var(--accent); color: #fff;
-          padding: 14px 24px; border-radius: 40px;
+          padding: 14px 24px; border-radius: 8px;
           display: flex; alignItems: center; gap: 12px;
           box-shadow: 0 8px 32px rgba(251,12,12,0.3);
           cursor: pointer; z-index: 100;
           text-decoration: none; font-weight: 600; font-size: 14px;
-          transition: transform 0.2s, box-shadow 0.2s;
+          transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          text-transform: uppercase; letter-spacing: 0.05em;
         }
-        .floating-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(251,12,12,0.4); }
+        .floating-cta:hover { transform: translateY(-2px); background: var(--accent-hover); box-shadow: 0 12px 40px rgba(251,12,12,0.4); }
         
         .tt {
           border-bottom: 1px dotted var(--accent);
@@ -1156,7 +1158,7 @@ export default function App() {
                 ) : (
                     <>
                         {/* HEADER */}
-                <div style={{ borderBottom: "1px solid var(--border)" }}>
+                <div style={{ position: "sticky", top: 0, zIndex: 90, background: "rgba(10, 10, 15, 0.8)", backdropFilter: "blur(12px)", borderBottom: "1px solid var(--border)" }}>
                     <div style={{ maxWidth: 960, margin: "0 auto", padding: "26px 26px 0" }}>
                         <div className="header-content" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 32, paddingBottom: 22 }}>
                             <div style={{ flex: "1 1 auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
