@@ -942,6 +942,7 @@ export default function App() {
     const [expanded, setExpanded] = useState(null);
     const [msgs, setMsgs] = useState(15000);
     const [currency, setCurrency] = useState("PKR");
+    const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
         (async function () {
@@ -1057,7 +1058,36 @@ export default function App() {
           .summary-bar { gap: 16px !important; }
           .comparison-matrix th, .comparison-matrix td { padding: 8px 10px !important; font-size: 11px !important; }
           .matrix-label { width: 120px !important; }
+          .tabs-container { display: none !important; }
+          .hamburger { display: flex !important; }
         }
+        
+        .hamburger {
+          display: none;
+          width: 32px; height: 32px;
+          flex-direction: column; justify-content: center; gap: 4px;
+          cursor: pointer; padding: 4px;
+          z-index: 100;
+        }
+        .hamburger span { display: block; width: 100%; height: 2px; background: var(--text); transition: 0.2s; }
+        .hamburger.on span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .hamburger.on span:nth-child(2) { opacity: 0; }
+        .hamburger.on span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+        
+        .mobile-menu {
+          position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+          background: var(--bg); z-index: 90;
+          display: flex; flexDirection: column; padding: 80px 26px; gap: 20px;
+          transform: translateY(-100%); transition: transform 0.3s ease-in-out;
+        }
+        .mobile-menu.on { transform: translateY(0); }
+        .mobile-item {
+          font-family: var(--mono); font-size: 14px; font-weight: 500;
+          letter-spacing: 0.1em; text-transform: uppercase;
+          color: var(--sub); text-decoration: none; padding: 12px 0;
+          border-bottom: 1px solid var(--border);
+        }
+        .mobile-item.on { color: var(--accent); border-bottom-color: var(--accent); }
       `}} />
 
             <div className="sans" style={{ background: "var(--bg)", color: "var(--text)", minHeight: "100vh" }}>
@@ -1078,24 +1108,44 @@ export default function App() {
                                     Four production architectures with system requirements, pricing, and a needs assessment to identify the right fit. Prices current May 2026.
                                 </p>
                             </div>
-                            <div>
-                                <div className="mono" style={{ fontSize: 9, color: "var(--dim)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.1em" }}>Currency</div>
-                                <div style={{ display: "flex" }}>
-                                    {["PKR", "USD"].map((c, i) => (
-                                        <button key={c} onClick={() => setCurrency(c)} style={{
-                                            padding: "6px 14px", fontSize: 11, fontWeight: 500,
-                                            fontFamily: "ui-monospace, SF Mono, Fira Code, Roboto Mono, monospace",
-                                            cursor: "pointer",
-                                            border: "1px solid var(--border2)",
-                                            marginLeft: i > 0 ? -1 : 0,
-                                            background: currency === c ? "var(--accent)" : "transparent",
-                                            color: currency === c ? "#fff" : "var(--sub)",
-                                            transition: "all 0.15s",
-                                        }}>{c}</button>
-                                    ))}
+                            <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+                                <div style={{ textAlign: "right" }}>
+                                    <div className="mono" style={{ fontSize: 9, color: "var(--dim)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.1em" }}>Currency</div>
+                                    <div style={{ display: "flex" }}>
+                                        {["PKR", "USD"].map((c, i) => (
+                                            <button key={c} onClick={() => setCurrency(c)} style={{
+                                                padding: "6px 14px", fontSize: 11, fontWeight: 500,
+                                                fontFamily: "ui-monospace, SF Mono, Fira Code, Roboto Mono, monospace",
+                                                cursor: "pointer",
+                                                border: "1px solid var(--border2)",
+                                                marginLeft: i > 0 ? -1 : 0,
+                                                background: currency === c ? "var(--accent)" : "transparent",
+                                                color: currency === c ? "#fff" : "var(--sub)",
+                                                transition: "all 0.15s",
+                                            }}>{c}</button>
+                                        ))}
+                                    </div>
+                                    <div className="mono" style={{ fontSize: 9, color: "var(--dim)", marginTop: 5 }}>1 USD = 280 PKR</div>
                                 </div>
-                                <div className="mono" style={{ fontSize: 9, color: "var(--dim)", marginTop: 5 }}>1 USD = 280 PKR</div>
+                                <div className={`hamburger ${menuOpen ? "on" : ""}`} onClick={() => setMenuOpen(!menuOpen)}>
+                                    <span /> <span /> <span />
+                                </div>
                             </div>
+                        </div>
+                        
+                        <div className={`mobile-menu ${menuOpen ? "on" : ""}`}>
+                            {[
+                                { id: "quiz", label: "Needs Assessment" },
+                                { id: "guide", label: "Architecture Guide" },
+                                { id: "flows", label: "Flow Diagrams" },
+                                { id: "calc", label: "API Pricing" },
+                                { id: "book", label: "Book a Call" },
+                                { id: "glossary", label: "Glossary" },
+                            ].map(t => (
+                                <div key={t.id} className={`mobile-item ${tab === t.id ? "on" : ""}`} onClick={() => { setTab(t.id); setMenuOpen(false); }}>
+                                    {t.label}
+                                </div>
+                            ))}
                         </div>
 
                         <div className="tabs-container">
