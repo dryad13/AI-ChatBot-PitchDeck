@@ -909,9 +909,10 @@ function GlossaryTab() {
                 </span>
                 {query && (
                     <button onClick={() => setQuery("")} style={{
-                        position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)",
+                        position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)",
                         background: "none", border: "none", color: "var(--dim)", cursor: "pointer",
                         fontSize: 16, lineHeight: 1, fontFamily: "ui-monospace, SF Mono, Fira Code, Roboto Mono, monospace",
+                        width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center",
                     }}>×</button>
                 )}
             </div>
@@ -1177,8 +1178,23 @@ export default function App() {
             letter-spacing: 0.05em !important;
           }
           .floating-cta { bottom: 16px !important; right: 16px !important; left: 16px !important; width: auto !important; border-radius: 8px !important; }
+          .tiers-grid { grid-template-columns: 1fr !important; }
+          .modal-2col { grid-template-columns: 1fr !important; gap: 16px !important; }
+          .modal-overlay { padding: 0 !important; align-items: flex-end !important; }
+          .modal-content { padding: 20px !important; border-radius: 8px 8px 0 0 !important; max-height: 88vh !important; }
+          .result-actions { flex-direction: column !important; }
+          .result-actions button { width: 100% !important; }
+          .pricing-header { align-items: flex-start !important; gap: 12px !important; }
+          .currency-sel { text-align: left !important; }
         }
-        
+
+        @media (max-width: 380px) {
+          .tabs-container { gap: 10px !important; }
+          .tab-btn { font-size: 9px !important; letter-spacing: 0.03em !important; }
+        }
+
+        .modal-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
         .floating-cta {
           position: fixed; bottom: 32px; right: 32px;
           background: var(--accent); color: #fff;
@@ -1287,16 +1303,23 @@ export default function App() {
                             {step < QUESTIONS.length && (
                                 <>
                                     <div style={{ marginBottom: 30 }}>
-                                        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
+                                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
                                             <span className="mono" style={{ fontSize: 9, color: "var(--dim)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
                                                 Question {step + 1} of {QUESTIONS.length}
                                             </span>
-                                            <span className="mono" style={{ fontSize: 9, color: "var(--faint)" }}>
+                                            <span className="mono" style={{ fontSize: 9, color: "var(--accent)" }}>
                                                 {Math.round((step / QUESTIONS.length) * 100)}%
                                             </span>
                                         </div>
-                                        <div className="bar-track">
-                                            <div className="bar-fill" style={{ width: `${(step / QUESTIONS.length) * 100}%` }} />
+                                        <div style={{ display: "flex", gap: 3 }}>
+                                            {QUESTIONS.map((_, i) => (
+                                                <div key={i} style={{
+                                                    flex: "1 1 0", height: 2, borderRadius: 1,
+                                                    background: i <= step ? "var(--accent)" : "var(--border2)",
+                                                    opacity: i < step ? 0.4 : 1,
+                                                    transition: "background 0.25s, opacity 0.25s",
+                                                }} />
+                                            ))}
                                         </div>
                                     </div>
 
@@ -1406,25 +1429,25 @@ export default function App() {
                                         })}
                                     </div>
 
-                                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                                    <div className="result-actions" style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                                         <button className="cta" onClick={() => { setTab("book"); }} style={{
                                             padding: "11px 22px", background: "var(--accent)", border: "none",
                                             color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer",
-                                            fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Display, system-ui, Segoe UI, Roboto, sans-serif",
+                                            fontFamily: "var(--font)",
                                         }}>
                                             Request a Scoping Call
                                         </button>
                                         <button className="cta" onClick={() => { setTab("guide"); setExpanded(result.tier.id); }} style={{
                                             padding: "11px 22px", background: "transparent",
                                             border: "1px solid var(--border2)", color: "var(--dim)",
-                                            fontSize: 13, cursor: "pointer", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Display, system-ui, Segoe UI, Roboto, sans-serif",
+                                            fontSize: 13, cursor: "pointer", fontFamily: "var(--font)",
                                         }}>
                                             View Architecture Details
                                         </button>
                                         <button className="cta" onClick={restart} style={{
                                             padding: "11px 22px", background: "transparent",
                                             border: "1px solid var(--border2)", color: "var(--dim)",
-                                            fontSize: 13, cursor: "pointer", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, SF Pro Display, system-ui, Segoe UI, Roboto, sans-serif",
+                                            fontSize: 13, cursor: "pointer", fontFamily: "var(--font)",
                                         }}>
                                             Restart Assessment
                                         </button>
@@ -1530,12 +1553,12 @@ export default function App() {
                     {/* ── API PRICING ── */}
                     {tab === "calc" && (
                         <div className="fade">
-                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 32, flexWrap: "wrap", gap: 20 }}>
-                                <div style={{ flex: 1, minWidth: 280 }}>
+                            <div className="pricing-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 32, flexWrap: "wrap", gap: 20 }}>
+                                <div style={{ flex: 1, minWidth: 0 }}>
                                     <div className="sl">Volume & Infrastructure Estimator</div>
                                     <h2 className="serif" style={{ fontSize: 21, fontWeight: 700 }}>Monthly Operating Estimates</h2>
                                 </div>
-                                <div style={{ textAlign: "right" }}>
+                                <div className="currency-sel" style={{ textAlign: "right" }}>
                                     <div className="mono" style={{ fontSize: 9, color: "var(--dim)", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.1em" }}>Currency Select</div>
                                     <div style={{ display: "flex" }}>
                                         {["PKR", "USD"].map((c, i) => (
@@ -1723,7 +1746,7 @@ export default function App() {
                             <div style={{ fontSize: 14, color: "var(--text)", lineHeight: 1.7 }}>{tierDetail.description}</div>
                         </div>
 
-                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 32 }}>
+                        <div className="modal-2col" style={{ marginBottom: 32 }}>
                             <div>
                                 <div className="sl">Primary Use Cases</div>
                                 {tierDetail.useCases.map((u, i) => (
@@ -1746,7 +1769,7 @@ export default function App() {
                             </div>
                         </div>
 
-                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+                        <div className="modal-2col">
                             <div>
                                 <div className="sl">Advantages</div>
                                 {tierDetail.pros.map((p, i) => (
@@ -1779,10 +1802,12 @@ export default function App() {
             )}
 
             {/* FLOATING CTA */}
-            <div onClick={() => setTab("book")} className="floating-cta">
-                <span style={{ fontSize: 18 }}>📅</span>
-                Book Scoping Call
-            </div>
+            {tab !== "book" && (
+                <div onClick={() => setTab("book")} className="floating-cta">
+                    <span style={{ fontSize: 18 }}>📅</span>
+                    Book Scoping Call
+                </div>
+            )}
         </>
     );
 }
