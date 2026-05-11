@@ -310,7 +310,14 @@ function MermaidDiagram({ chart, caption }) {
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState(false);
 
-    const url = `https://quickchart.io/mermaid?text=${encodeURIComponent(chart)}&theme=dark`;
+    const toBase64 = (str) => {
+        try {
+            return btoa(unescape(encodeURIComponent(str)));
+        } catch (e) {
+            return btoa(str);
+        }
+    };
+    const url = `https://mermaid.ink/svg/${toBase64(chart)}`;
 
     return (
         <div style={{ margin: "16px 0" }}>
