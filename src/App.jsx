@@ -321,11 +321,8 @@ function MermaidDiagram({ chart, caption }) {
         }
     };
 
-    const encoded = toBase64(JSON.stringify({ 
-        code: chart, 
-        mermaid: { theme: "dark", background: "transparent" } 
-    }));
-    const url = `https://mermaid.ink/svg/${encoded}`;
+    const encoded = toBase64(`%%{init: {'theme': 'dark', 'themeVariables': { 'background': '#111' }}}%%\n${chart}`);
+    const url = `https://kroki.io/mermaid/svg/${encoded}`;
 
     return (
         <div style={{ margin: "16px 0" }}>
@@ -381,7 +378,7 @@ const FLOWS = [
         name: "Rule-Based Bot",
         description: "Every message is matched against a fixed library of keywords or button selections. If a match is found, the corresponding scripted response is returned. If no rule applies, a fallback message is shown. There is no intelligence — only pattern matching.",
         chart: `flowchart LR
-  A["User Input"] --> B["Keyword &amp; Button Matcher"]
+  A["User Input"] --> B["Keyword & Button Matcher"]
   B --> C{"Rule Found?"}
   C -->|"Yes"| D["Scripted Response\nfrom Rule Library"]
   C -->|"No"| E["Fallback Message\nor Human Escalation"]
