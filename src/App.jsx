@@ -306,18 +306,9 @@ function fmt(usd, currency) {
 
 
 
-function MermaidDiagram({ chart, caption }) {
-    const [loading, setLoading] = useState(true);
-    const [err, setErr] = useState(false);
-
-    const toBase64 = (str) => {
-        try {
-            return btoa(unescape(encodeURIComponent(str)));
-        } catch (e) {
-            return btoa(str);
-        }
-    };
-    const url = `https://mermaid.ink/svg/${toBase64(chart)}`;
+function MermaidDiagram({ id, caption }) {
+    // We now use pre-rendered static SVGs for 100% reliability
+    const src = `/flows/${id}.svg`;
 
     return (
         <div style={{ margin: "16px 0" }}>
@@ -326,35 +317,25 @@ function MermaidDiagram({ chart, caption }) {
                 background: "rgba(255,255,255,0.02)", 
                 border: "1px solid var(--border)",
                 borderRadius: 8,
-                overflow: "hidden",
-                minHeight: loading ? 120 : 0
+                overflow: "hidden"
             }}>
-                {loading && (
-                    <div style={{ 
-                        position: "absolute", inset: 0, display: "flex", 
-                        alignItems: "center", justifyContent: "center",
-                        fontSize: 11, color: "var(--dim)", fontFamily: "var(--mono)"
-                    }}>
-                        GENERATING ARCHITECTURE...
-                    </div>
-                )}
                 <img 
-                    src={url} 
+                    src={src} 
                     alt={caption || "Architecture Diagram"}
                     style={{ 
-                        display: loading ? "none" : "block", 
+                        display: "block", 
                         width: "100%", height: "auto", 
                         padding: "20px",
                         filter: "brightness(0.9) contrast(1.1)"
                     }}
-                    onLoad={() => setLoading(false)}
-                    onError={() => { setErr(true); setLoading(false); }}
+                    onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'block';
+                    }}
                 />
-                {err && (
-                    <div style={{ padding: "40px", textAlign: "center", color: "var(--dim)", fontSize: 12 }}>
-                        Diagram visualization unavailable.
-                    </div>
-                )}
+                <div style={{ display: "none", padding: "40px", textAlign: "center", color: "var(--dim)", fontSize: 12 }}>
+                    Technical visualization unavailable.
+                </div>
             </div>
             {caption && (
                 <div style={{ marginTop: 10, fontSize: 11.5, color: "var(--dim)", fontStyle: "italic", lineHeight: 1.6, textAlign: "center" }}>
@@ -496,7 +477,7 @@ function FlowDiagramsTab() {
                         marginBottom: 0,
                         overflowX: "auto",
                     }}>
-                        <MermaidDiagram chart={flow.chart} caption={flow.caption} />
+                        <MermaidDiagram id={flow.id} caption={flow.caption} />
                     </div>
 
                     {/* Legend */}
@@ -1820,7 +1801,7 @@ export default function App() {
                                 return flow ? (
                                     <div style={{ marginTop: 24 }}>
                                         <div className="mono" style={{ fontSize: 9, color: "var(--accent)", textTransform: "uppercase", marginBottom: 12 }}>Architecture Flow</div>
-                                        <MermaidDiagram chart={flow.chart} caption={flow.caption} />
+                                        <MermaidDiagram id={flow.id} caption={flow.caption} />
                                     </div>
                                 ) : null;
                             })()}
