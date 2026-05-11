@@ -310,7 +310,18 @@ function MermaidDiagram({ chart, caption }) {
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState(false);
 
-    const encoded = btoa(JSON.stringify({ 
+    // Robust base64 encoding for Unicode support
+    const toBase64 = (str) => {
+        try {
+            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+                return String.fromCharCode('0x' + p1);
+            }));
+        } catch (e) {
+            return btoa(str);
+        }
+    };
+
+    const encoded = toBase64(JSON.stringify({ 
         code: chart, 
         mermaid: { theme: "dark", background: "transparent" } 
     }));
@@ -324,7 +335,7 @@ function MermaidDiagram({ chart, caption }) {
                 border: "1px solid var(--border)",
                 borderRadius: 8,
                 overflow: "hidden",
-                minHeight: loading ? 200 : 0
+                minHeight: loading ? 120 : 0
             }}>
                 {loading && (
                     <div style={{ 
@@ -1809,7 +1820,18 @@ export default function App() {
 
                         <div style={{ marginBottom: 32 }}>
                             <div className="sl">Technical Overview</div>
-                            <div style={{ fontSize: 14, color: "var(--text)", lineHeight: 1.7 }} dangerouslySetInnerHTML={{ __html: tierDetail.description }} />
+                            <div style={{ fontSize: 14, color: "var(--text)", lineHeight: 1.7, marginBottom: 20 }} dangerouslySetInnerHTML={{ __html: tierDetail.description }} />
+                            
+                            {/* Diagram in Modal */}
+                            {(() => {
+                                const flow = FLOWS.find(f => f.id === tierDetail.id);
+                                return flow ? (
+                                    <div style={{ marginTop: 24 }}>
+                                        <div className="mono" style={{ fontSize: 9, color: "var(--accent)", textTransform: "uppercase", marginBottom: 12 }}>Architecture Flow</div>
+                                        <MermaidDiagram chart={flow.chart} caption={flow.caption} />
+                                    </div>
+                                ) : null;
+                            })()}
                         </div>
 
                         <div className="modal-2col" style={{ marginBottom: 32 }}>
