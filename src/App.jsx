@@ -310,19 +310,7 @@ function MermaidDiagram({ chart, caption }) {
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState(false);
 
-    // Robust base64 encoding for Unicode support
-    const toBase64 = (str) => {
-        try {
-            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => {
-                return String.fromCharCode('0x' + p1);
-            }));
-        } catch (e) {
-            return btoa(str);
-        }
-    };
-
-    const encoded = toBase64(`%%{init: {'theme': 'dark', 'themeVariables': { 'background': '#111' }}}%%\n${chart}`);
-    const url = `https://kroki.io/mermaid/svg/${encoded}`;
+    const url = `https://quickchart.io/mermaid?text=${encodeURIComponent(chart)}&theme=dark`;
 
     return (
         <div style={{ margin: "16px 0" }}>
