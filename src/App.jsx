@@ -356,8 +356,8 @@ const FLOWS = [
         chart: `flowchart LR
   A["User Input"] --> B["Keyword & Button Matcher"]
   B --> C{"Rule Found?"}
-  C -->|"Yes"| D["Scripted Response\nfrom Rule Library"]
-  C -->|"No"| E["Fallback Message\nor Human Escalation"]
+  C -->|"Yes"| D["Scripted Response<br/>from Rule Library"]
+  C -->|"No"| E["Fallback Message<br/>or Human Escalation"]
   D --> F["WhatsApp / Web Widget"]
   E --> F`,
         caption: "Entirely deterministic. The same input always produces the same output. No AI inference occurs at any point in this flow.",
@@ -368,11 +368,11 @@ const FLOWS = [
         name: "LLM-Powered Bot",
         description: "Each incoming message is assembled with the system prompt and full conversation history, then sent to the language model API. The model reasons over the full context and generates a response. A session store maintains conversation continuity across turns within a session.",
         chart: `flowchart LR
-  A["User Message"] --> B["API Layer\nNode.js"]
-  G["Session Store\nSupabase"] <-->|"Read / Write History"| B
+  A["User Message"] --> B["API Layer<br/>Node.js"]
+  G["Session Store<br/>Supabase"] <-->|"Read / Write History"| B
   B --> C["Context Assembly"]
-  P["System Prompt\n& Persona"] --> C
-  C --> D["LLM\nClaude Sonnet 4.6"]
+  P["System Prompt<br/>& Persona"] --> C
+  C --> D["LLM<br/>Claude Sonnet 4.6"]
   D --> E["Generated Response"]
   E --> F["User"]`,
         caption: "The model never reads your private documents — it reasons from its training data and whatever context is assembled in the system prompt.",
@@ -383,13 +383,13 @@ const FLOWS = [
         name: "RAG Knowledge Bot",
         description: "Before the LLM is called, the user's query is converted into a vector embedding and used to search your indexed document library. The most relevant passages are retrieved and injected into the model's context window alongside the system prompt and conversation history. The model is then instructed to answer using only the retrieved content.",
         chart: `flowchart LR
-  DOCS["Your Documents\nPDFs, Sheets, Policies"] -->|"Chunk & Embed\non ingest"| VDB
+  DOCS["Your Documents<br/>PDFs, Sheets, Policies"] -->|"Chunk & Embed<br/>on ingest"| VDB
   A["User Query"] --> EMB["Embedding Model"]
-  EMB -->|"Query Vector"| VDB["Vector Database\nPinecone"]
+  EMB -->|"Query Vector"| VDB["Vector Database<br/>Pinecone"]
   VDB -->|"Top K Relevant Chunks"| CTX["Context Assembly"]
   SYS["System Prompt"] --> CTX
   HIST["Chat History"] --> CTX
-  CTX --> LLM["LLM\nClaude Sonnet 4.6"]
+  CTX --> LLM["LLM<br/>Claude Sonnet 4.6"]
   LLM --> ANS["Grounded Answer"]
   ANS --> USR["User"]`,
         caption: "The model's answer is anchored to passages retrieved from your actual documents. If your knowledge base does not cover a topic, the model is instructed to say so.",
@@ -400,19 +400,19 @@ const FLOWS = [
         name: "Agentic AI System",
         description: "The user states a high-level goal. The orchestrator agent decomposes it into sub-tasks and selects the appropriate tools to call — retrieving documents, querying your CRM, sending notifications, or updating records. Results are fed back into the orchestrator, which iterates until the goal is fully met. Human override is available at any point.",
         chart: `flowchart TD
-  A["User Goal"] --> ORCH["Orchestrator Agent\nClaude Opus 4.6"]
+  A["User Goal"] --> ORCH["Orchestrator Agent<br/>Claude Opus 4.6"]
   ORCH --> PLAN["Decompose into Sub-tasks"]
-  PLAN --> T1["Tool: Search\nDocument Store"]
-  PLAN --> T2["Tool: Query / Update\nCRM & ERP"]
-  PLAN --> T3["Tool: Send\nEmail / WhatsApp"]
+  PLAN --> T1["Tool: Search<br/>Document Store"]
+  PLAN --> T2["Tool: Query / Update<br/>CRM & ERP"]
+  PLAN --> T3["Tool: Send<br/>Email / WhatsApp"]
   T1 --> AGG["Aggregate Results"]
   T2 --> AGG
   T3 --> AGG
   AGG --> ORCH
-  ORCH --> CHK{"Goal\nComplete?"}
+  ORCH --> CHK{"Goal<br/>Complete?"}
   CHK -->|"No — iterate"| PLAN
-  CHK -->|"Yes"| RESP["Response + Actions\nConfirmed to User"]
-  ORCH -.->|"Override available\nat any step"| HUM["Human\nEscalation"]`,
+  CHK -->|"Yes"| RESP["Response + Actions<br/>Confirmed to User"]
+  ORCH -.->|"Override available<br/>at any step"| HUM["Human<br/>Escalation"]`,
         caption: "Unlike the tiers above, the agentic system does not wait for the user to confirm each step. It acts autonomously — making real changes in your connected systems — until the goal is satisfied or an override is triggered.",
     },
 ];
